@@ -10,7 +10,7 @@ export default function Index() {
   return (
       <UiView>
 
-          <UiHeader />
+          <UiHeader title='NoteDo'/>
 
           <UiView bgColor margin>
               <UiViewAdd flexRow>
