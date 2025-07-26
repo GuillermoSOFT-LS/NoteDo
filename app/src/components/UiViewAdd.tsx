@@ -10,7 +10,7 @@ export const UiViewAdd = ({flexRow,children, ...rest}:Props)=> {
             flexDirection: flexRow ? 'row' : 'column',
             justifyContent: flexRow ? 'space-between' : 'center',
             alignItems: flexRow ? 'center' : undefined ,
-            paddingBottom: 50,
+            paddingBottom: 30,
             gap: 20
         }}
             {...rest}

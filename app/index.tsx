@@ -5,13 +5,14 @@ import {UiViewAdd} from "@/app/src/components/UiViewAdd";
 import {router} from "expo-router";
 import {UiHeader} from "@/app/src/components/UiHeader";
 import {useState, useEffect} from "react";
-import {useCRUD} from "@/app/src/hook/useCRUD";
+import {useFecht} from "@/app/src/hook/useFecht";
 import {FlatList} from "react-native";
+import {UiCardList} from "@/app/src/components/UiCardList";
 
 export default function Index() {
 
     const [Listas, setListas] = useState<string[]>([])
-    const {handleReadList} = useCRUD()
+    const {handleReadList} = useFecht()
 
 
     async function fetchLists() {
@@ -24,7 +25,7 @@ export default function Index() {
 
 
   return (
-      <UiView>
+      <UiView bgColor>
 
           <UiHeader title='NoteDo'/>
 
@@ -35,13 +36,15 @@ export default function Index() {
                              onPress={()=> router.push('/src/screens/AddList')}/>
               </UiViewAdd>
 
-              <FlatList
-                  data={Listas}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({item}) => (
-                      <UiText type='subTitle' color='white'>{item}</UiText>
-                  )}
+                  <FlatList
+                      data={Listas}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={({item}) => (
+                                <UiCardList titleList={item} />
+                      )}
+
                   />
+
           </UiView>
       </UiView>
 

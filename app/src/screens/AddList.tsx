@@ -5,7 +5,6 @@ import { UiTextinput } from "@/app/src/components/UiTextinput";
 import { UiButtton } from "@/app/src/components/UiButtton";
 import { UiHeader } from "@/app/src/components/UiHeader";
 import {useCRUD} from "@/app/src/hook/useCRUD";
-import {Redirect, router} from "expo-router";
 
 
 
@@ -13,20 +12,7 @@ const AddList = () => {
 
     const [titleList, setTitleList] = useState("")
 
-    const {handleReadList, handleUpdateList} = useCRUD();
-
-    async function AddList() {
-           if(titleList?.trim() === ""){
-            alert("El nombre de la lista no puede estar vacío");
-            return;
-           }
-
-           const  list = await handleReadList()
-           list.push(titleList)
-           setTitleList("")
-           handleUpdateList(list)
-    }
-
+    const  {AddList} = useCRUD()
 
     return (
         <UiView bgColor>
@@ -44,7 +30,7 @@ const AddList = () => {
                         color='white'
                         bgColor
                         text='Crear nueva lista'
-                        onPress={AddList}
+                        onPress={()=> AddList({title: titleList, setTitle: setTitleList})}
                     />
                 </UiViewAdd>
             </UiView>

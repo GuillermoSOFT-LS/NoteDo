@@ -1,45 +1,32 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
+import {useFecht} from "@/app/src/hook/useFecht";
+
+interface PropsAdd {
+    title: string;
+    setTitle:  React.Dispatch<React.SetStateAction<string>>
+}
 
 
-export const useCRUD = ()=> {
+export const useCRUD = () => {
 
-    const STORAGE_KEY = 'taskLists';
+    const {handleUpdateList, handleReadList} = useFecht()
 
-    const handleAddList = async (list: string[]):Promise<boolean> => {
-        try {
-            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(list))
-            return true
-        }catch {return false}
-    }
-
-    const handleReadList = async ():Promise<string[]> => {
-
-        const list = await AsyncStorage.getItem(STORAGE_KEY)
-        if (list) {
-            return JSON.parse(list)
+    const AddList = async ({title, setTitle}:PropsAdd) => {
+        if (title.trim() === ''){
+            alert('El campo no puede estar vacio')
+            return
         }
-        return []
+
+        const lista = await handleReadList()
+        lista.push(title)
+        setTitle("")
+        handleUpdateList(lista)
+
     }
 
-    const handleUpdateList = async (list: string[]):Promise<boolean> => {
-        try {
-            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(list))
-            return true
-        }catch {return false}
-    }
-
-    const handleRemoveList = async () => {
-        try {
-            await AsyncStorage.removeItem(STORAGE_KEY)
-            return true
-        }catch {return false}
-    }
 
 
     return{
-        handleAddList,
-        handleRemoveList,
-        handleReadList,
-        handleUpdateList
+        AddList
     }
 }
