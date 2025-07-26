@@ -5,28 +5,23 @@ import {UiViewAdd} from "@/app/src/components/UiViewAdd";
 import {router} from "expo-router";
 import {UiHeader} from "@/app/src/components/UiHeader";
 import {useState, useEffect} from "react";
-import {useFecht} from "@/app/src/hook/useFecht";
 import {FlatList} from "react-native";
 import {UiCardList} from "@/app/src/components/UiCardList";
+import {useCRUD} from "@/app/src/hook/useCRUD";
 
 export default function Index() {
 
     const [Listas, setListas] = useState<string[]>([])
-    const {handleReadList} = useFecht()
+    const {ShowList} = useCRUD()
 
 
-    async function fetchLists() {
-        const lists = await handleReadList()
-        setListas(lists)
-    }
     useEffect(() => {
-        fetchLists()
+        ShowList({setList: setListas})
     }, []);
 
 
   return (
       <UiView bgColor>
-
           <UiHeader title='NoteDo'/>
 
           <UiView bgColor margin>
@@ -41,9 +36,7 @@ export default function Index() {
                       keyExtractor={(item, index) => index.toString()}
                       renderItem={({item}) => (
                                 <UiCardList titleList={item} />
-                      )}
-
-                  />
+                      )}/>
 
           </UiView>
       </UiView>
