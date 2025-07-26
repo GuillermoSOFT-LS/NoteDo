@@ -4,40 +4,29 @@ import { UiViewAdd } from "@/app/src/components/UiViewAdd";
 import { UiTextinput } from "@/app/src/components/UiTextinput";
 import { UiButtton } from "@/app/src/components/UiButtton";
 import { UiHeader } from "@/app/src/components/UiHeader";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
+import {useCRUD} from "@/app/src/hook/useCRUD";
+import {Redirect, router} from "expo-router";
 
-const STORAGE_KEY = 'taskLists'; // 🔑 Clave para AsyncStorage
+
 
 const AddList = () => {
-    const [listName, setListName] = useState('');
 
-    const handleAddList = async () => {
-        if (!listName.trim()) {
-            Alert.alert('Nombre requerido', 'Por favor ingresa un nombre para la lista');
+    const [titleList, setTitleList] = useState("")
+
+    const {handleReadList, handleUpdateList} = useCRUD();
+
+    async function AddList() {
+           if(titleList?.trim() === ""){
+            alert("El nombre de la lista no puede estar vacío");
             return;
-        }
+           }
 
-        try {
-            const existingLists = await AsyncStorage.getItem(STORAGE_KEY);
-            const parsedLists = existingLists ? JSON.parse(existingLists) : [];
+           const  list = await handleReadList()
+           list.push(titleList)
+           setTitleList("")
+           handleUpdateList(list)
+    }
 
-            const newList = {
-                id: Date.now().toString(),
-                name: listName.trim(),
-            };
-
-            const updatedLists = [...parsedLists, newList];
-
-            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedLists));
-
-            setListName('');
-            Alert.alert('Éxito', 'Lista agregada correctamente');
-        } catch (error) {
-            console.error('Error al guardar la lista:', error);
-            Alert.alert('Error', 'No se pudo guardar la lista');
-        }
-    };
 
     return (
         <UiView bgColor>
@@ -47,15 +36,15 @@ const AddList = () => {
                 <UiViewAdd>
                     <UiTextinput
                         placeholder='Nombre de la nueva lista'
-                        value={listName}
-                        onChangeText={setListName}
+                        value={titleList}
+                        onChangeText={(title) => setTitleList(title)}
                     />
                     <UiButtton
                         icon='add'
                         color='white'
                         bgColor
                         text='Crear nueva lista'
-                        onPress={handleAddList}
+                        onPress={AddList}
                     />
                 </UiViewAdd>
             </UiView>
