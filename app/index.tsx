@@ -2,9 +2,9 @@ import {UiText} from "@/app/src/components/UiText";
 import {UiView} from "@/app/src/components/UiView";
 import {UiButtton} from "@/app/src/components/UiButtton";
 import {UiViewAdd} from "@/app/src/components/UiViewAdd";
-import {router} from "expo-router";
+import {router,useFocusEffect} from "expo-router";
 import {UiHeader} from "@/app/src/components/UiHeader";
-import {useState, useEffect} from "react";
+import {useState, useCallback} from "react";
 import {FlatList} from "react-native";
 import {UiCardList} from "@/app/src/components/UiCardList";
 import {useCRUD} from "@/app/src/hook/useCRUD";
@@ -15,9 +15,15 @@ export default function Index() {
     const {ShowList} = useCRUD()
 
 
-    useEffect(() => {
-        ShowList({setList: setListas})
-    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            const loadList = async () => {
+                await ShowList({ setList: setListas });
+            };
+            loadList();
+        }, [setListas])
+    );
 
 
   return (
