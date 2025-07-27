@@ -28,7 +28,7 @@ const AddList = () => {
                     <UiButtton
                         icon='add'
                         color='white'
-                        bgColor
+                        bgColor='green'
                         text='Crear nueva lista'
                         onPress={()=> AddList({title: titleList, setTitle: setTitleList})}
                     />

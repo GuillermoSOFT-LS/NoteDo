@@ -12,7 +12,7 @@ import {useCRUD} from "@/app/src/hook/useCRUD";
 export default function Index() {
 
     const [Listas, setListas] = useState<string[]>([])
-    const {ShowList} = useCRUD()
+    const {ShowList,removeList} = useCRUD()
 
 
 
@@ -33,15 +33,19 @@ export default function Index() {
           <UiView bgColor margin>
               <UiViewAdd flexRow>
                   <UiText type='title' color='white'>Listas</UiText>
-                  <UiButtton color='white' bgColor icon='add-circle' text='Nueva lista'
+                  <UiButtton color='white' bgColor='green' icon='add-circle' text='Nueva lista'
                              onPress={()=> router.push('/src/screens/AddList')}/>
               </UiViewAdd>
 
                   <FlatList
                       data={Listas}
                       keyExtractor={(item, index) => index.toString()}
-                      renderItem={({item}) => (
-                                <UiCardList titleList={item} />
+                      renderItem={({index, item}) => (
+
+                          <>
+                              <UiCardList titleList={item} onPress={()=> removeList({indice: index, setList: setListas})}/>
+                          </>
+
                       )}/>
 
           </UiView>

@@ -5,10 +5,11 @@ import {UiButtton} from "@/app/src/components/UiButtton";
 
 interface Props extends ViewProps {
     titleList: string
+    onPress?: () => void;
 }
 
 
-export const UiCardList = ({titleList,...rest}:Props)=> {
+export const UiCardList = ({titleList,onPress,...rest}:Props)=> {
     return (
         <View style={{paddingBottom: 20}}>
             <View style={styles.container} {...rest}>
@@ -19,6 +20,7 @@ export const UiCardList = ({titleList,...rest}:Props)=> {
                     <UiText color='gray'>25/07/2025</UiText>
                     <UiButtton color='gray' icon='time' text='27/07/2025'/>
                 </View>
+                <UiButtton onPress={onPress} color='white' bgColor='red' icon='remove' text='Eliminar'/>
 
             </View>
         </View>
