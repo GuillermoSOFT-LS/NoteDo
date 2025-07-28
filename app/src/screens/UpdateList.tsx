@@ -4,7 +4,7 @@ import { UiViewAdd } from "@/app/src/components/UiViewAdd";
 import { UiTextinput } from "@/app/src/components/UiTextinput";
 import { UiButtton } from "@/app/src/components/UiButtton";
 import { UiHeader } from "@/app/src/components/UiHeader";
-import {useCRUD} from "@/app/src/hook/useCRUD";
+import {useCRUDList} from "@/app/src/hook/useCRUDList";
 import {useLocalSearchParams, router} from "expo-router";
 
 
@@ -13,7 +13,8 @@ const UpdateList = () => {
 
     const {index, title} = useLocalSearchParams()
     const [newTitle, setNewTitle] = useState(title as string);
-    const { UpdateList } = useCRUD();
+
+    const { UpdateList } = useCRUDList();
 
     const handleSave = async () => {
         await UpdateList({

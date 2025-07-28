@@ -1,11 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+interface Props {
+    STORAGE_KEY: string
+}
 
-export const useFecht = ()=> {
-
-
-    //Clave de AsyncStorage
-    const STORAGE_KEY = 'taskLists';
+export const useFecht = ({STORAGE_KEY}:Props)=> {
 
 
     //Enviar Datos a AsynStorage

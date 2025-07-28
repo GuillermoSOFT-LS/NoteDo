@@ -1,7 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import {useFecht} from "@/app/src/hook/useFecht";
 import {router} from "expo-router";
-import {isTemplateElement} from "@babel/types";
 
 
 interface PropsAdd{
@@ -22,17 +21,17 @@ interface PropsUpdate{
     Item: string;
 }
 
-export const useCRUD = () => {
+export const useCRUDList = () => {
 
-    const {handleUpdateList, handleReadList} = useFecht()
+    const {handleUpdateList, handleReadList} = useFecht({STORAGE_KEY: 'NoteTask'})
 
 
     //Funcion de agregar Listas
     const AddList = async ({title, setTitle}:PropsAdd) => {
 
         if (title.trim() === ""){
-                alert('El campo no puede estar vacio')
-                return
+            alert('El campo no puede estar vacio')
+            return
         }
 
         const lista = await handleReadList()
@@ -42,34 +41,32 @@ export const useCRUD = () => {
         setTitle("")
         alert(`La lista ${title} se a creado`)
         handleUpdateList(lista)
+        router.dismiss()
     }
-
 
 
     //Funcion Mostrar Listas
 
     const ShowList = async ({setList}:PropsShow)=> {
         const lista = await handleReadList()
-            setList(lista)
+        setList(lista)
     }
 
     //Funcion Elimar Listas
-   const removeList = async ({indice, setList}:PropsRemove) => {
+    const removeList = async ({indice, setList}:PropsRemove) => {
         const lista = await handleReadList()
         lista.splice(indice, 1)
         handleUpdateList(lista)
         setList(lista)
-   }
+    }
 
-   //Funcion de editar Listas
+    //Funcion de editar Listas
 
     const UpdateList = async({indice,Item}:PropsUpdate) => {
         const lista = await handleReadList()
         lista[indice] = Item
         await handleUpdateList(lista)
     }
-
-
 
     return{
         AddList,

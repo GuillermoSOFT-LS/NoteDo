@@ -20,6 +20,7 @@ export const UiView = ({margin,bgColor,children}:Props)=> {
             <View style={{
                 flex: 1,
                 marginHorizontal: margin ? 20 : 0,
+                paddingTop: 10
             }}>{children}</View>
 
         </View>

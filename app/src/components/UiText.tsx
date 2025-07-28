@@ -4,7 +4,6 @@ import {Text, TextProps} from "react-native";
 interface Props  extends TextProps{
     type?: 'title' | 'subTitle' | 'text'
     color?: 'white' | 'gray' | 'orange'
-    paddingBottom?: boolean;
 }
 
 export const UiText = ({type,children,color,style, ...rest}:Props)=> {

@@ -2,32 +2,35 @@ import {View, ViewProps, StyleSheet, Pressable} from "react-native";
 import {UiText} from "@/app/src/components/UiText";
 import {UiButtton} from "@/app/src/components/UiButtton";
 import {router} from "expo-router";
+import {UiViewAdd} from "@/app/src/components/UiViewAdd";
 
 
 interface Props extends ViewProps {
     titleList: string
-    onPressAdd?: () => void;
+    onPressRemove?: () => void;
     onPressUpdate?: () => void;
 }
 
 
-export const UiCardList = ({titleList,onPressAdd,onPressUpdate,...rest}:Props)=> {
+export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props)=> {
     return (
-        <View style={{paddingBottom: 20}}>
+        <View style={{paddingBottom: 10}}>
             <Pressable style={styles.container} {...rest}
             onPress={()=> router.push({
-                pathname: '/src/screens/UpdateList',
-                params: { title: titleList, index: 0 } // Assuming index is 0 for simplicity
+                pathname: '/src/screens/DetailsList',
+                params: { title: titleList, index: 0 }
             })}>
 
-                <UiText type='text' color='orange' style={styles.title}>{titleList}</UiText>
 
-                <View style={styles.footer}>
-                    <UiText color='gray'>25/07/2025</UiText>
-                    <UiButtton color='gray' icon='time' text='27/07/2025'/>
-                </View>
-                <UiButtton onPress={onPressAdd} color='white' bgColor='red' icon='remove' text='Eliminar'/>
-                <UiButtton onPress={onPressUpdate} color='white' bgColor='green' icon='create' text='Editar'/>
+                <UiText color='gray'>25/07/2025</UiText>
+                <UiViewAdd flexRow>
+                   <UiText type='text' color='orange'>{titleList}</UiText>
+                    <View style={{display: 'flex', flexDirection: 'row'}}>
+                        <UiButtton onPress={onPressUpdate} color='white' bgColor='transparent' icon='create-outline' text=''/>
+                        <UiButtton onPress={onPressRemove} color='white' bgColor='transparent' icon='remove' text=''/>
+                    </View>
+
+                </UiViewAdd>
 
             </Pressable>
         </View>
@@ -41,19 +44,5 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10
     },
-
-    footer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderStyle: 'solid',
-        borderColor: 'gray',
-        borderTopWidth: 1
-    },
-
-    title: {
-        paddingBottom: 18
-    }
-
 
 })

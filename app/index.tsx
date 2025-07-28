@@ -7,12 +7,12 @@ import {UiHeader} from "@/app/src/components/UiHeader";
 import {useState, useCallback} from "react";
 import {FlatList} from "react-native";
 import {UiCardList} from "@/app/src/components/UiCardList";
-import {useCRUD} from "@/app/src/hook/useCRUD";
+import {useCRUDList} from "@/app/src/hook/useCRUDList";
 
 export default function Index() {
 
     const [Listas, setListas] = useState<string[]>([])
-    const {ShowList,removeList} = useCRUD()
+    const {ShowList,removeList} = useCRUDList()
 
     useFocusEffect(
         useCallback(() => {
@@ -29,7 +29,7 @@ export default function Index() {
           <UiHeader title='NoteDo'/>
 
           <UiView bgColor margin>
-              <UiViewAdd flexRow>
+              <UiViewAdd flexRow paddingB='lg' paddingT='md'>
                   <UiText type='title' color='white'>Listas</UiText>
                   <UiButtton color='white' bgColor='green' icon='add-circle' text='Nueva lista'
                              onPress={()=> router.push('/src/screens/AddList')}/>
@@ -43,7 +43,7 @@ export default function Index() {
                           <>
                               <UiCardList
                                   titleList={item}
-                                  onPressAdd={()=> removeList({indice: index, setList: setListas})}
+                                  onPressRemove={()=> removeList({indice: index, setList: setListas})}
                                   onPressUpdate={()=> router.push({
                                     pathname: '/src/screens/UpdateList',
                                     params: { title: item, index: index}

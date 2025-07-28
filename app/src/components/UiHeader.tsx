@@ -19,7 +19,7 @@ export const UiHeader = ({icon,title}:Props)=> {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 10,
+        paddingTop: 15,
         backgroundColor: '#111',
         flexDirection: 'row',
         gap: 20,
