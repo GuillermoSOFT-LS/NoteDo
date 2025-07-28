@@ -1,5 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import {useFecht} from "@/app/src/hook/useFecht";
+import {router} from "expo-router";
+import {isTemplateElement} from "@babel/types";
+
 
 interface PropsAdd{
     title: string;
@@ -14,9 +17,14 @@ interface PropsRemove extends PropsShow{
     indice: number;
 }
 
+interface PropsUpdate{
+    indice: number;
+    Item: string;
+}
+
 export const useCRUD = () => {
 
-    const {handleUpdateList, handleReadList,handleRemoveList} = useFecht()
+    const {handleUpdateList, handleReadList} = useFecht()
 
 
     //Funcion de agregar Listas
@@ -53,11 +61,20 @@ export const useCRUD = () => {
         setList(lista)
    }
 
+   //Funcion de editar Listas
+
+    const UpdateList = async({indice,Item}:PropsUpdate) => {
+        const lista = await handleReadList()
+        lista[indice] = Item
+        await handleUpdateList(lista)
+    }
+
 
 
     return{
         AddList,
         ShowList,
-        removeList
+        removeList,
+        UpdateList
     }
 }

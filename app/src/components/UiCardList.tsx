@@ -1,18 +1,24 @@
-import { View,ViewProps, StyleSheet} from "react-native";
+import {View, ViewProps, StyleSheet, Pressable} from "react-native";
 import {UiText} from "@/app/src/components/UiText";
 import {UiButtton} from "@/app/src/components/UiButtton";
+import {router} from "expo-router";
 
 
 interface Props extends ViewProps {
     titleList: string
-    onPress?: () => void;
+    onPressAdd?: () => void;
+    onPressUpdate?: () => void;
 }
 
 
-export const UiCardList = ({titleList,onPress,...rest}:Props)=> {
+export const UiCardList = ({titleList,onPressAdd,onPressUpdate,...rest}:Props)=> {
     return (
         <View style={{paddingBottom: 20}}>
-            <View style={styles.container} {...rest}>
+            <Pressable style={styles.container} {...rest}
+            onPress={()=> router.push({
+                pathname: '/src/screens/UpdateList',
+                params: { title: titleList, index: 0 } // Assuming index is 0 for simplicity
+            })}>
 
                 <UiText type='text' color='orange' style={styles.title}>{titleList}</UiText>
 
@@ -20,9 +26,10 @@ export const UiCardList = ({titleList,onPress,...rest}:Props)=> {
                     <UiText color='gray'>25/07/2025</UiText>
                     <UiButtton color='gray' icon='time' text='27/07/2025'/>
                 </View>
-                <UiButtton onPress={onPress} color='white' bgColor='red' icon='remove' text='Eliminar'/>
+                <UiButtton onPress={onPressAdd} color='white' bgColor='red' icon='remove' text='Eliminar'/>
+                <UiButtton onPress={onPressUpdate} color='white' bgColor='green' icon='create' text='Editar'/>
 
-            </View>
+            </Pressable>
         </View>
     )
 }

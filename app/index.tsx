@@ -14,8 +14,6 @@ export default function Index() {
     const [Listas, setListas] = useState<string[]>([])
     const {ShowList,removeList} = useCRUD()
 
-
-
     useFocusEffect(
         useCallback(() => {
             const loadList = async () => {
@@ -43,14 +41,19 @@ export default function Index() {
                       renderItem={({index, item}) => (
 
                           <>
-                              <UiCardList titleList={item} onPress={()=> removeList({indice: index, setList: setListas})}/>
+                              <UiCardList
+                                  titleList={item}
+                                  onPressAdd={()=> removeList({indice: index, setList: setListas})}
+                                  onPressUpdate={()=> router.push({
+                                    pathname: '/src/screens/UpdateList',
+                                    params: { title: item, index: index}
+                                  })}
+                              />
                           </>
 
                       )}/>
 
           </UiView>
       </UiView>
-
-
   );
 }
