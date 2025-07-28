@@ -5,32 +5,41 @@ import { UiTextinput } from "@/app/src/components/UiTextinput";
 import { UiButtton } from "@/app/src/components/UiButtton";
 import { UiHeader } from "@/app/src/components/UiHeader";
 import {useCRUD} from "@/app/src/hook/useCRUD";
+import {useLocalSearchParams, router} from "expo-router";
 
 
 
-const AddList = () => {
+const UpdateList = () => {
 
-    const [titleList, setTitleList] = useState("")
+    const {index, title} = useLocalSearchParams()
+    const [newTitle, setNewTitle] = useState(title as string);
+    const { UpdateList } = useCRUD();
 
-    const  {AddList} = useCRUD()
+    const handleSave = async () => {
+        await UpdateList({
+            indice: Number(index),
+            Item: newTitle
+        });
+        router.dismiss();
+    };
 
     return (
         <UiView bgColor>
-            <UiHeader title='Agregar Listas' icon='arrow-back' />
+            <UiHeader title='Editar Lista' icon='arrow-back' />
 
             <UiView bgColor margin>
                 <UiViewAdd>
                     <UiTextinput
-                        placeholder='Nombre de la nueva lista'
-                        value={titleList}
-                        onChangeText={(title) => setTitleList(title)}
+                        placeholder='Nuevo nombre de la lista'
+                        value={newTitle}
+                        onChangeText={setNewTitle}
                     />
                     <UiButtton
                         icon='add'
                         color='white'
                         bgColor='green'
-                        text='Crear nueva lista'
-                        onPress={()=> AddList({title: titleList, setTitle: setTitleList})}
+                        text='Editar'
+                        onPress={handleSave}
                     />
                 </UiViewAdd>
             </UiView>
@@ -38,4 +47,4 @@ const AddList = () => {
     );
 };
 
-export default AddList;
+export default UpdateList

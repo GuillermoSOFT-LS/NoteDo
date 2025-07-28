@@ -5,7 +5,7 @@ import {UiText} from "@/app/src/components/UiText";
 interface Props extends PressableProps{
     text: string
     icon?: keyof typeof Ionicons.glyphMap;
-    bgColor?:boolean;
+    bgColor?: 'green' | 'transparent' | 'red';
     color?: 'white' | 'gray' | 'orange'
     type?: 'title' | 'subTitle' | 'text'
 }
@@ -14,7 +14,11 @@ export const UiButtton = ({type,icon,text,bgColor,color, ...rest }:Props)=> {
 
   return (
       <Pressable style={[styles.boton,
-          {backgroundColor: bgColor ? 'green' : 'transparent'}
+          {backgroundColor:
+                bgColor === 'green' ? 'green' :
+                bgColor === 'red' ? 'red' :
+                bgColor === 'transparent' ? 'transparent': undefined
+          }
       ]} {...rest}>
 
           <Ionicons name={icon} size={20} color={color} />
