@@ -38,6 +38,21 @@ export default function Index() {
                   <FlatList
                       data={Listas}
                       keyExtractor={(item, index) => index.toString()}
+
+                      ListEmptyComponent={<UiText
+                           type='title'
+                           color='gray'
+                           style={{
+                                marginTop: 100,
+                                padding: 100,
+                                textAlign: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'orange',
+                                borderRadius: 200
+                      }}>
+                          No hay listas creadas
+                  </UiText>}
+
                       renderItem={({index, item}) => (
 
                           <>
@@ -50,7 +65,6 @@ export default function Index() {
                                   })}
                               />
                           </>
-
                       )}/>
 
           </UiView>
