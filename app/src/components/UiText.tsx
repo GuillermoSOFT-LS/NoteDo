@@ -11,7 +11,7 @@ export const UiText = ({type,children,color,style, ...rest}:Props)=> {
         <Text style={[style,
             {fontSize: type === 'title' ? 35 :
              type === 'subTitle' ? 25:
-             type === 'text' ? 18:undefined
+             type === 'text' ? 18: undefined
             },
 
             {color: color === 'white' ? 'white':

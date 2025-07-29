@@ -8,16 +8,19 @@ interface Props extends PressableProps{
     bgColor?: 'green' | 'transparent' | 'red';
     color?: 'white' | 'gray' | 'orange'
     type?: 'title' | 'subTitle' | 'text'
+    border?: boolean
 }
 
-export const UiButtton = ({type,icon,text,bgColor,color, ...rest }:Props)=> {
+export const UiButtton = ({type,icon,text,bgColor,color, border,...rest }:Props)=> {
 
   return (
       <Pressable style={[styles.boton,
           {backgroundColor:
                 bgColor === 'green' ? 'green' :
                 bgColor === 'red' ? 'red' :
-                bgColor === 'transparent' ? 'transparent': undefined
+                bgColor === 'transparent' ? 'transparent': undefined,
+
+          borderWidth: border ? 1 : undefined,
           }
       ]} {...rest}>
 

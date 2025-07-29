@@ -28,6 +28,7 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props
                     <View style={{display: 'flex', flexDirection: 'row'}}>
                         <UiButtton onPress={onPressUpdate} color='white' bgColor='transparent' icon='create-outline' text=''/>
                         <UiButtton onPress={onPressRemove} color='white' bgColor='transparent' icon='remove' text=''/>
+                        <UiButtton border color='white' bgColor='transparent' icon='checkbox-sharp' text='Completed'/>
                     </View>
 
                 </UiViewAdd>
