@@ -5,7 +5,7 @@ import {UiText} from "@/app/src/components/UiText";
 interface Props extends PressableProps{
     text: string
     icon?: keyof typeof Ionicons.glyphMap;
-    bgColor?: 'green' | 'transparent' | 'red';
+    bgColor?: 'green' | 'transparent' | 'red' | 'white' | 'gray'
     color?: 'white' | 'gray' | 'orange'
     type?: 'title' | 'subTitle' | 'text'
     border?: boolean
@@ -18,9 +18,11 @@ export const UiButtton = ({type,icon,text,bgColor,color, border,...rest }:Props)
           {backgroundColor:
                 bgColor === 'green' ? 'green' :
                 bgColor === 'red' ? 'red' :
-                bgColor === 'transparent' ? 'transparent': undefined,
+                bgColor === 'transparent' ? 'transparent':
+                bgColor === 'white'  ? 'white':
+                bgColor === 'gray'  ? 'gray' : undefined,
 
-          borderWidth: border ? 1 : undefined,
+          borderWidth: border ? 1 : undefined, borderColor: border ? 'gray' : undefined,
           }
       ]} {...rest}>
 

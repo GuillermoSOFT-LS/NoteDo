@@ -53,7 +53,7 @@ const DetailsList = () => {
         <UiView bgColor>
             <UiHeader title={title as string} icon='arrow-back' />
             <UiView bgColor margin>
-                <UiViewAdd style={{ paddingBottom: 20 }}>
+                <UiViewAdd style={{ paddingBottom: 10 }}>
                     <UiTextinput
                         placeholder='Nombre de la tarea'
                         value={titleTask}

@@ -33,7 +33,7 @@ export default function Index() {
             <UiHeader title="NoteDo" />
 
             <UiView bgColor margin>
-                <UiViewAdd flexRow paddingB="lg" paddingT="md">
+                <UiViewAdd justifyContent='space-between' flexRow paddingB="lg" paddingT="md">
                     <UiText type="title" color="white">
                         Listas
                     </UiText>
