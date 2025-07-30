@@ -3,7 +3,8 @@ import {UiText} from "@/app/src/components/UiText";
 import {UiButtton} from "@/app/src/components/UiButtton";
 import {router} from "expo-router";
 import {UiViewAdd} from "@/app/src/components/UiViewAdd";
-
+import {Checkbox} from "react-native-paper";
+import {useState} from "react";
 
 interface Props extends ViewProps {
     titleList: string
@@ -13,9 +14,14 @@ interface Props extends ViewProps {
 
 
 export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props)=> {
+
+    const [Checked, setChecked] = useState(false)
+
+
+
     return (
         <View style={{paddingBottom: 10}}>
-            <Pressable style={styles.container} {...rest}
+            <Pressable style={[styles.container, {opacity: Checked ? 0.7 : 1}]} {...rest}
             onPress={()=> router.push({
                 pathname: '/src/screens/DetailsList',
                 params: { title: titleList, index: 0 }
@@ -32,11 +38,14 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props
                 </View>
 
                 <UiViewAdd flexRow justifyContent='space-between' paddingB='md'>
-                   <UiText type='text' color='orange'>{titleList}</UiText>
+
+
+                    <UiViewAdd flexRow>
+                        <Checkbox status={Checked ? 'checked' : 'unchecked'} onPress={()=> setChecked(!Checked)} color='orange'/>
+                        <UiText style={{textDecorationLine: Checked && 'line-through'}} type='text' color='orange'>{titleList}</UiText>
+                    </UiViewAdd>
                     <UiButtton border onPress={onPressUpdate} color='gray' bgColor='transparent' icon='create-outline' text='Editar'/>
-
                 </UiViewAdd>
-
             </Pressable>
         </View>
     )
@@ -45,9 +54,10 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#222',
         padding: 10,
-        borderRadius: 10
+        borderRadius: 10,
+        backgroundColor: '#222'
     },
+
 
 })

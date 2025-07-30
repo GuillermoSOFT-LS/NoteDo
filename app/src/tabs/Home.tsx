@@ -28,12 +28,13 @@ export default function Home() {
         }, [])
     );
 
+
     return (
         <UiView bgColor>
             <UiHeader title="NoteDo" />
 
             <UiView bgColor margin>
-                <UiViewAdd justifyContent='space-between' flexRow paddingB="lg" paddingT="md">
+                <UiViewAdd justifyContent='space-between' flexRow paddingB="lg">
                     <UiText type="title" color="white">
                         Listas
                     </UiText>

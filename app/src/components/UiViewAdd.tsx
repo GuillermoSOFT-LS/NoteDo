@@ -20,7 +20,7 @@ export const UiViewAdd = ({flexRow,children,paddingB,paddingT,style,justifyConte
 
             alignItems: flexRow ? 'center' : undefined ,
             paddingBottom: flexRow ? 0 : 10,
-            gap: flexRow ? 0 : 20
+            gap: flexRow ? 10 : 20
         }, {
             paddingBottom: paddingB === 'sm' ? 0 :
                             paddingB === 'md' ? 10 :
