@@ -3,7 +3,6 @@ import {UiText} from "@/app/src/components/UiText";
 import {UiButtton} from "@/app/src/components/UiButtton";
 import {router} from "expo-router";
 import {UiViewAdd} from "@/app/src/components/UiViewAdd";
-import {Checkbox} from "expo-checkbox";
 
 
 interface Props extends ViewProps {
@@ -25,17 +24,16 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props
 
 
                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 5}}>
-                    <UiText padding color='gray'>25/07/2025</UiText>
+                    <UiText color='gray'>25/07/2025</UiText>
                     <UiViewAdd flexRow>
-                        <UiButtton onPress={onPressUpdate} color='gray' bgColor='transparent' icon='create-outline' text=''/>
-                        <UiButtton onPress={onPressRemove} color='gray' bgColor='transparent' icon='remove' text=''/>
-                        <Checkbox />
+                        {/*<UiButtton onPress={onPressRemove} color='gray' bgColor='transparent' icon='remove' text='Elimit'/>*/}
                     </UiViewAdd>
 
                 </View>
 
-                <UiViewAdd flexRow paddingB='md'>
+                <UiViewAdd flexRow justifyContent='space-between' paddingB='md'>
                    <UiText type='text' color='orange'>{titleList}</UiText>
+                    <UiButtton border onPress={onPressUpdate} color='gray' bgColor='transparent' icon='create-outline' text='Editar'/>
 
                 </UiViewAdd>
 

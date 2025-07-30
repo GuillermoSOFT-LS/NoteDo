@@ -59,6 +59,7 @@ const DetailsList = () => {
                         value={titleTask}
                         onChangeText={setTitleTask}
                     />
+
                     <UiButtton
                         icon='add'
                         color='white'
@@ -75,7 +76,7 @@ const DetailsList = () => {
                         <UiCardList
                             titleList={item}
                             onPressUpdate={() => router.push({
-                                pathname: '/src/screens/UpdateList',
+                                pathname: '/src/screens/UpdateTask',
                                 params: { title: item, index: index }
                             })}
                         />
