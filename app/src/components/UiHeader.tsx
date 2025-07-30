@@ -20,7 +20,7 @@ export const UiHeader = ({icon,title}:Props)=> {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 15,
-        backgroundColor: '#111',
+        backgroundColor: '#000',
         flexDirection: 'row',
         gap: 20,
         alignItems: 'center',
