@@ -9,10 +9,11 @@ interface Props {
 }
 
 export const UiHeader = ({icon,title}:Props)=> {
+
     return (
         <View style={styles.container}>
-            <Ionicons name={icon} size={22} color='orange' onPress={()=> router.dismiss()}/>
-            <UiText type='subTitle' color='orange'>{title}</UiText>
+                <Ionicons name={icon} size={22} color='orange' onPress={()=> router.dismiss()}/>
+                <UiText type='subTitle' color='orange'>{title}</UiText>
         </View>
     )
 }
