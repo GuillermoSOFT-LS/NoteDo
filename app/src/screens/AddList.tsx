@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import { UiView } from "@/app/src/components/UiView";
-import { UiViewAdd } from "@/app/src/components/UiViewAdd";
-import { UiTextinput } from "@/app/src/components/UiTextinput";
-import { UiButtton } from "@/app/src/components/UiButtton";
-import { UiHeader } from "@/app/src/components/UiHeader";
 import {useCRUDList} from "@/app/src/hook/useCRUDList";
-
-
+import UiForm from "@/app/src/components/UiForm";
 
 const AddList = () => {
 
@@ -15,27 +9,16 @@ const AddList = () => {
     const  {AddList} = useCRUDList()
 
     return (
-        <UiView bgColor>
-            <UiHeader title='Agregar Listas' icon='arrow-back' />
-
-            <UiView bgColor margin>
-                <UiViewAdd>
-                    <UiTextinput
-                        placeholder='Nombre de la nueva lista'
-                        value={titleList}
-                        onChangeText={(title) => setTitleList(title)}
-                    />
-                    <UiButtton
-                        icon='add'
-                        color='white'
-                        bgColor='green'
-                        text='Crear nueva lista'
-                        onPress={()=> AddList({title: titleList, setTitle: setTitleList})}
-                    />
-                </UiViewAdd>
-            </UiView>
-        </UiView>
-    );
+            <UiForm
+                textBtn='Add'
+                onPress={()=> AddList({title: titleList, setTitle: setTitleList})}
+                onChangeText={(title) => setTitleList(title)}
+                placeholder='Nombre de la nueva lista'
+                value={titleList}
+                headerTitle='Agregar Listas'
+                iconBtn='add'
+            />
+);
 };
 
 export default AddList;

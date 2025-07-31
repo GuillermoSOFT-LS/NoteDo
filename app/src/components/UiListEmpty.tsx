@@ -3,10 +3,11 @@ import {Ionicons} from "@expo/vector-icons";
 
 interface props {
     title: string;
+    type?: 'title' | 'subTitle' | 'text'
 }
 
 
-export const UiListEmpty = ({title}:props)=> {
+export const UiListEmpty = ({title,type='title'}:props)=> {
     return (
 
         <UiText
@@ -16,12 +17,11 @@ export const UiListEmpty = ({title}:props)=> {
                 marginTop: 100,
                 padding: 75,
                 textAlign: "center",
-                justifyContent: "center",
                 backgroundColor: "#111",
                 borderRadius: 200,
             }}
         >
-            <UiText type='title'>{title}</UiText>
+            <UiText type={type}>{title}</UiText>
             <Ionicons name="albums-outline" size={100} color="white" />
 
         </UiText>

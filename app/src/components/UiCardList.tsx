@@ -10,14 +10,13 @@ interface Props extends ViewProps {
     titleList: string
     onPressRemove?: () => void;
     onPressUpdate?: () => void;
+    showChecked?: boolean;
 }
 
 
-export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props)=> {
+export const UiCardList = ({titleList,onPressRemove,onPressUpdate,showChecked,...rest}:Props)=> {
 
     const [Checked, setChecked] = useState(false)
-
-
 
     return (
         <View style={{paddingBottom: 10}}>
@@ -26,8 +25,6 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props
                 pathname: '/src/screens/DetailsList',
                 params: { title: titleList, index: 0 }
             })}>
-
-
 
                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 5}}>
                     <UiText color='gray'>25/07/2025</UiText>
@@ -41,7 +38,8 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,...rest}:Props
 
 
                     <UiViewAdd flexRow>
-                        <Checkbox status={Checked ? 'checked' : 'unchecked'} onPress={()=> setChecked(!Checked)} color='orange'/>
+                        {showChecked ? <Checkbox status={Checked ? 'checked' : 'unchecked'} onPress={()=> setChecked(!Checked)} color='orange'/> : null}
+
                         <UiText style={{textDecorationLine: Checked ? 'line-through' : 'none'}} type='text' color='orange'>{titleList}</UiText>
                     </UiViewAdd>
                     <UiButtton border onPress={onPressUpdate} color='gray' bgColor='transparent' icon='create-outline' text='Editar'/>

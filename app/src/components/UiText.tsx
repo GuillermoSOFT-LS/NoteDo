@@ -3,17 +3,17 @@ import {Text, TextProps} from "react-native";
 interface Props  extends TextProps{
     type?: 'title' | 'subTitle' | 'text'
     color?: 'white' | 'gray' | 'orange'
-    padding?: boolean
+    paddingB?: boolean
 }
 
-export const UiText = ({type,children,color,style,padding, ...rest}:Props)=> {
+export const UiText = ({type,children,color,style,paddingB, ...rest}:Props)=> {
     return (
         <Text style={[style,
-            {fontSize: type === 'title' ? 35 :
+            {fontSize: type === 'title' ? 32 :
                 type === 'subTitle' ? 25:
                 type === 'text' ? 18: undefined,
 
-             paddingBottom: padding ? 10 : 0,
+             paddingBottom: paddingB ? 20 : 0,
             },
 
             {color: color === 'white' ? 'white':

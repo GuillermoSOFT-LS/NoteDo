@@ -9,9 +9,10 @@ interface Props extends PressableProps{
     color?: 'white' | 'gray' | 'orange'
     type?: 'title' | 'subTitle' | 'text'
     border?: boolean
+    radius?: boolean
 }
 
-export const UiButtton = ({type,icon,text,bgColor,color, border,...rest }:Props)=> {
+export const UiButtton = ({type,icon,text,bgColor,color, border,radius,...rest }:Props)=> {
 
   return (
       <Pressable style={[styles.boton,
@@ -23,6 +24,15 @@ export const UiButtton = ({type,icon,text,bgColor,color, border,...rest }:Props)
                 bgColor === 'gray'  ? 'gray' : undefined,
 
           borderWidth: border ? 1 : undefined, borderColor: border ? 'gray' : undefined,
+
+          borderRadius: radius ? 20 : 10,
+          padding: radius ? 20 : 10,
+          width: radius ?'40%' : undefined,
+          position: radius ? 'absolute' : undefined,
+          bottom: radius ? 80 : undefined,
+          right: radius ? '5%' : undefined,
+
+
           }
       ]} {...rest}>
 
@@ -35,11 +45,9 @@ export const UiButtton = ({type,icon,text,bgColor,color, border,...rest }:Props)
 
 const styles = StyleSheet.create({
     boton: {
-        padding: 10,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         gap: 10,
-        borderRadius: 10,
     },
 })
