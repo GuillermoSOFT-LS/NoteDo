@@ -56,7 +56,7 @@ const DetailsList = () => {
                                 showChecked
                                 titleList={item}
                                 onPressUpdate={() => router.push({
-                                    pathname: '/src/screens/UpdateTask',
+                                    pathname: '/src/tabs/screens/UpdateTask',
                                     params: { title: item, index: index }
                                 })}
                             />
@@ -70,7 +70,7 @@ const DetailsList = () => {
                         text='Add Task'
                         radius
                         onPress={()=> router.push({
-                                pathname: '/src/screens/AddTask',
+                                pathname: '/src/tabs/screens/AddTask',
                                 params: { title: title as string }
                             })}/>
                 </UiView>

@@ -12,7 +12,7 @@ export const UiHeader = ({icon,title}:Props)=> {
 
     return (
         <View style={styles.container}>
-                <Ionicons name={icon} size={22} color='orange' onPress={()=> router.dismiss()}/>
+                <Ionicons name={icon} size={30} color='orange' onPress={()=> router.back()}/>
                 <UiText type='subTitle' color='orange'>{title}</UiText>
         </View>
     )

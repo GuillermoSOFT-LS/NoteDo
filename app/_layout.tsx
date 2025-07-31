@@ -6,7 +6,7 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <Stack screenOptions={{headerShown: false,}}>
             <Stack.Screen
-            name="index"
+            name="tabs"
             options={{
                 title: 'NoteDo',
             }}/>

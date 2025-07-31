@@ -41,7 +41,7 @@ export default function Home() {
                         bgColor="green"
                         icon="add-circle"
                         text="Nueva lista"
-                        onPress={() => router.push("/src/screens/AddList")}
+                        onPress={() => router.push("/src/tabs/screens/AddList")}
                     />
                 </UiViewAdd>
 
@@ -55,7 +55,7 @@ export default function Home() {
                             onPressRemove={() => removeList({ indice: index, setList: setListas })}
                             onPressUpdate={() =>
                                 router.push({
-                                    pathname: "/src/screens/UpdateList",
+                                    pathname: "/src/tabs/screens/UpdateList",
                                     params: { title: item.title, index: index },
                                 })}/>
                      )}/>

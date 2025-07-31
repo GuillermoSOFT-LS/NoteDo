@@ -5,7 +5,7 @@ import { UiTextinput } from "@/app/src/components/UiTextinput";
 import { UiButtton } from "@/app/src/components/UiButtton";
 import { UiHeader } from "@/app/src/components/UiHeader";
 import {useLocalSearchParams, router} from "expo-router";
-import useCRUDTask from "@/app/src/hook/useCRUDTask";
+import {useCRUDTask} from "@/app/src/hook/useCRUDTask";
 
 
 

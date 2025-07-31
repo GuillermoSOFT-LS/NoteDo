@@ -30,7 +30,8 @@ export const UiButtton = ({type,icon,text,bgColor,color, border,radius,...rest }
           width: radius ?'40%' : undefined,
           position: radius ? 'absolute' : undefined,
           bottom: radius ? 80 : undefined,
-          right: radius ? '5%' : undefined,
+          right: radius ? '3%' : undefined,
+          elevation: radius ? 5 : 0,
 
 
           }

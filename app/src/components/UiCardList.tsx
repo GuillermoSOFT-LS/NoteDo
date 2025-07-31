@@ -22,7 +22,7 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,showChecked,..
         <View style={{paddingBottom: 10}}>
             <Pressable style={[styles.container, {opacity: Checked ? 0.6 : 1}]} {...rest}
             onPress={()=> router.push({
-                pathname: '/src/screens/DetailsList',
+                pathname: '/src/tabs/screens/DetailsList',
                 params: { title: titleList, index: 0 }
             })}>
 

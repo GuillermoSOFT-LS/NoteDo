@@ -7,8 +7,8 @@ export default function RootTabs() {
             headerShown: false,
             tabBarActiveTintColor: 'orange',
             tabBarInactiveTintColor: 'white',
-
             tabBarStyle: {
+                borderTopWidth: 0,
                 backgroundColor: '#000'
             },
         }}>
@@ -25,6 +25,12 @@ export default function RootTabs() {
                     tabBarIcon: ({ color, size }) =>  <Ionicons name='trash' color={color} size={size} />,
                 }}
             />
+
+            <Tabs.Screen name='screens/AddList' options={{href: null}}/>
+            <Tabs.Screen name='screens/AddTask' options={{href: null}}/>
+            <Tabs.Screen name='screens/DetailsList' options={{href: null}}/>
+            <Tabs.Screen name='screens/UpdateList' options={{href: null}}/>
+            <Tabs.Screen name='screens/UpdateTask' options={{href: null}}/>
         </Tabs>
     )
 }
