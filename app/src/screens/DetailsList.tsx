@@ -9,6 +9,7 @@ import { UiButtton } from "@/app/src/components/UiButtton";
 import { UiCardList } from "@/app/src/components/UiCardList";
 import { FlatList } from "react-native";
 import { useCRUDList } from "@/app/src/hook/useCRUDList";
+import {UiListEmpty} from "@/app/src/components/UiListEmpty";
 
 interface TaskList {
     title: string;
@@ -72,6 +73,7 @@ const DetailsList = () => {
                 <FlatList
                     data={currentTasks}
                     keyExtractor={(_, index) => index.toString()}
+                    ListEmptyComponent={<UiListEmpty title='No hay tareas creadas'/>}
                     renderItem={({ index, item }) => (
                         <UiCardList
                             titleList={item}
