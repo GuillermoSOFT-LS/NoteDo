@@ -36,11 +36,10 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,showChecked,..
 
                 <UiViewAdd flexRow justifyContent='space-between' paddingB='md'>
 
-
                     <UiViewAdd flexRow>
                         {showChecked ? <Checkbox status={Checked ? 'checked' : 'unchecked'} onPress={()=> setChecked(!Checked)} color='orange'/> : null}
 
-                        <UiText style={{textDecorationLine: Checked ? 'line-through' : 'none'}} type='text' color='orange'>{titleList}</UiText>
+                        <UiText style={{textDecorationLine: Checked ? 'line-through' : 'none', maxWidth: 180}} type='text' color='orange'>{titleList}</UiText>
                     </UiViewAdd>
                     <UiButtton border onPress={onPressUpdate} color='gray' bgColor='transparent' icon='create-outline' text='Editar'/>
                 </UiViewAdd>

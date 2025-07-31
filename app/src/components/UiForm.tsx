@@ -1,9 +1,10 @@
 import { UiView } from "@/app/src/components/UiView";
 import { UiViewAdd } from "@/app/src/components/UiViewAdd";
-import { UiTextinput } from "@/app/src/components/UiTextinput";
 import { UiButtton } from "@/app/src/components/UiButtton";
 import { UiHeader } from "@/app/src/components/UiHeader";
 import {Ionicons} from "@expo/vector-icons";
+import {TextInput} from "react-native-paper";
+import React from "react";
 
 interface Props {
     textBtn: string;
@@ -13,10 +14,9 @@ interface Props {
     value: string;
     headerTitle: string;
     iconBtn: keyof typeof Ionicons.glyphMap
-    marginContent?: boolean;
 }
 
-const UiForm = ({textBtn,onPress,onChangeText,placeholder,value,headerTitle,iconBtn, marginContent}:Props) => {
+const UiForm = ({textBtn,onPress,onChangeText,value,headerTitle,iconBtn,placeholder}:Props) => {
 
     return (
         <UiView bgColor>
@@ -24,11 +24,27 @@ const UiForm = ({textBtn,onPress,onChangeText,placeholder,value,headerTitle,icon
 
             <UiView bgColor margin>
                 <UiViewAdd>
-                    <UiTextinput
-                        placeholder={placeholder}
+
+                    <TextInput
+                        mode="outlined"
+                        label={placeholder}
+                        right={<TextInput.Affix text="/100" />}
                         value={value}
                         onChangeText={onChangeText}
+                        style={{
+                            backgroundColor: '#000',
+                        }}
+                        theme={{
+                            colors: {
+                                primary: 'green',
+                                secondary: 'white',
+                                text: 'white',
+                                placeholder: '#aaa',
+                                background: '#000',
+                            },
+                        }}
                     />
+
                     <UiButtton
                         icon={iconBtn}
                         color='white'

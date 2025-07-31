@@ -17,7 +17,7 @@ export const UiText = ({type,children,color,style,paddingB, ...rest}:Props)=> {
             },
 
             {color: color === 'white' ? 'white':
-              color === 'gray' ? '#D8D8D8':
+              color === 'gray' ? '#BFBFBF':
               color === 'orange' ? 'orange': undefined
             },
 

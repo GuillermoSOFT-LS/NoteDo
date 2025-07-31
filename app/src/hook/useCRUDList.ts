@@ -54,7 +54,7 @@ export const useCRUDList = () => {
         lista.push({ title, tasks: [] });
         setTitle("");
         handleUpdateList(lista);
-        router.dismiss();
+        router.back();
     };
 
     const ShowList = async ({ setList }: PropsShow) => {

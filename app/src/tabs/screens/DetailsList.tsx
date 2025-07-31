@@ -67,7 +67,7 @@ const DetailsList = () => {
                         bgColor='green'
                         color='white'
                         icon='add'
-                        text='Add Task'
+                        text='Agregar Tarea'
                         radius
                         onPress={()=> router.push({
                                 pathname: '/src/tabs/screens/AddTask',

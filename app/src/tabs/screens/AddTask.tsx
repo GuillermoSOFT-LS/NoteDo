@@ -49,7 +49,8 @@ const AddTask = () => {
                         placeholder='Nombre de la tarea'
                         value={titleTask}
                         headerTitle='Crear Tarea'
-                        iconBtn='add' />
+                        iconBtn='add'/>
+
 
     );
 };

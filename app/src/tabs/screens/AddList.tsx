@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {useCRUDList} from "@/app/src/hook/useCRUDList";
 import UiForm from "@/app/src/components/UiForm";
+import {TextInput} from "react-native-paper";
 
 const AddList = () => {
 
@@ -10,7 +11,7 @@ const AddList = () => {
 
     return (
             <UiForm
-                textBtn='Add'
+                textBtn='Crear Lista'
                 onPress={()=> AddList({title: titleList, setTitle: setTitleList})}
                 onChangeText={(title) => setTitleList(title)}
                 placeholder='Nombre de la nueva lista'
