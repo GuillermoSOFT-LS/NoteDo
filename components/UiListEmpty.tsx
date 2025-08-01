@@ -1,4 +1,4 @@
-import {UiText} from "@/app/src/components/UiText";
+import {UiText} from "@/components/UiText";
 import {Ionicons} from "@expo/vector-icons";
 
 interface props {

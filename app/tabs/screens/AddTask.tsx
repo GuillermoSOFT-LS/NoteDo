@@ -1,7 +1,7 @@
 import React, { useEffect,useCallback, useState } from 'react';
 import {router, useFocusEffect, useLocalSearchParams} from "expo-router";
-import { useCRUDList } from "@/app/src/hook/useCRUDList";
-import UiForm from "@/app/src/components/UiForm";
+import { useCRUDList } from "@/hook/useCRUDList";
+import {UiForm} from "@/components/UiForm";
 
 interface TaskList {
     title: string;

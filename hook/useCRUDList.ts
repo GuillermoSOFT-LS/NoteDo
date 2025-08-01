@@ -1,5 +1,5 @@
 import React from "react";
-import { useFecht } from "@/app/src/hook/useFecht";
+import { useFecht } from "@/hook/useFecht";
 import { router } from "expo-router";
 
 interface TaskList {

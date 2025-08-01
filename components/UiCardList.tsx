@@ -1,8 +1,8 @@
-import {View, ViewProps, StyleSheet, Pressable, Alert} from "react-native";
-import {UiText} from "@/app/src/components/UiText";
-import {UiButtton} from "@/app/src/components/UiButtton";
+import {View, ViewProps, StyleSheet, Pressable} from "react-native";
+import {UiText} from "@/components/UiText";
+import {UiButtton} from "@/components/UiButtton";
 import {router} from "expo-router";
-import {UiViewAdd} from "@/app/src/components/UiViewAdd";
+import {UiViewAdd} from "@/components/UiViewAdd";
 import {Checkbox} from "react-native-paper";
 import {useState} from "react";
 
@@ -24,7 +24,7 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,showChecked,on
             <Pressable style={[styles.container, {opacity: Checked ? 0.6 : 1}]}
             onLongPress={onLongPress}
             onPress={()=> router.push({
-                pathname: '/src/tabs/screens/DetailsList',
+                pathname: '/tabs/screens/DetailsList',
                 params: { title: titleList, index: 0 }
             })} {...rest}>
 
@@ -57,6 +57,4 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#222'
     },
-
-
 })

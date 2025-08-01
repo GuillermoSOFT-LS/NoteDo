@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {useLocalSearchParams, router} from "expo-router";
-import {useCRUDTask} from "@/app/src/hook/useCRUDTask";
-import UiForm from "@/app/src/components/UiForm";
+import {useCRUDTask} from "@/hook/useCRUDTask";
+import {UiForm} from "@/components/UiForm";
 
 const UpdateTask = () => {
 

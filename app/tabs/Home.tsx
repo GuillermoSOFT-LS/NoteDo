@@ -1,14 +1,14 @@
-import { UiText } from "@/app/src/components/UiText";
-import { UiView } from "@/app/src/components/UiView";
-import { UiButtton } from "@/app/src/components/UiButtton";
-import { UiViewAdd } from "@/app/src/components/UiViewAdd";
+import { UiText } from "@/components/UiText";
+import { UiView } from "@/components/UiView";
+import { UiButtton } from "@/components/UiButtton";
+import { UiViewAdd } from "@/components/UiViewAdd";
 import { router, useFocusEffect } from "expo-router";
-import { UiHeader } from "@/app/src/components/UiHeader";
+import { UiHeader } from "@/components/UiHeader";
 import { useState, useCallback } from "react";
 import {FlatList} from "react-native";
-import { UiCardList } from "@/app/src/components/UiCardList";
-import { useCRUDList } from "@/app/src/hook/useCRUDList";
-import {UiListEmpty} from "@/app/src/components/UiListEmpty";
+import { UiCardList } from "@/components/UiCardList";
+import { useCRUDList } from "@/hook/useCRUDList";
+import {UiListEmpty} from "@/components/UiListEmpty";
 
 interface TaskList {
     title: string;
@@ -37,7 +37,7 @@ export default function Home() {
                 <UiViewAdd justifyContent='space-between' flexRow paddingB="lg">
                     <UiText type="title" color="white">Listas</UiText>
                     <UiButtton color="white" bgColor="orange" icon="add-circle" text="Nueva lista"
-                        onPress={() => router.push("/src/tabs/screens/AddList")}
+                        onPress={() => router.push("/tabs/screens/AddList")}
                     />
                 </UiViewAdd>
 
@@ -51,10 +51,11 @@ export default function Home() {
                             onPressRemove={() => removeList({ indice: index, setList: setListas })}
                             onPressUpdate={() =>
                                 router.push({
-                                    pathname: "/src/tabs/screens/UpdateList",
+                                    pathname: "/tabs/screens/UpdateList",
                                     params: { title: item.title, index: index },
                                 })}/>
-                     )}/>
+                     )}
+                />
             </UiView>
         </UiView>
     );

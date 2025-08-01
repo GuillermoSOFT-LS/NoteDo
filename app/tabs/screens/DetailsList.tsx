@@ -1,13 +1,13 @@
 import React, {useEffect, useCallback, useState } from 'react';
-import { UiView } from "@/app/src/components/UiView";
-import { UiHeader } from "@/app/src/components/UiHeader";
+import { UiView } from "@/components/UiView";
+import { UiHeader } from "@/components/UiHeader";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
-import { UiText } from "@/app/src/components/UiText";
-import { UiButtton } from "@/app/src/components/UiButtton";
-import { UiCardList } from "@/app/src/components/UiCardList";
+import { UiText } from "@/components/UiText";
+import { UiButtton } from "@/components/UiButtton";
+import { UiCardList } from "@/components/UiCardList";
 import { FlatList } from "react-native";
-import { useCRUDList } from "@/app/src/hook/useCRUDList";
-import {UiListEmpty} from "@/app/src/components/UiListEmpty";
+import { useCRUDList } from "@/hook/useCRUDList";
+import {UiListEmpty} from "@/components/UiListEmpty";
 
 interface TaskList {
     title: string;
@@ -44,7 +44,7 @@ const DetailsList = () => {
         <>
             <UiView bgColor>
                 <UiHeader title={title as string} icon='arrow-back' />
-                <UiView bgColor margin>
+                <UiView bgColor margin insetNull>
 
                     <UiText color='gray' type='title' paddingB>Lista de Tareas</UiText>
                     <FlatList
@@ -56,7 +56,7 @@ const DetailsList = () => {
                                 showChecked
                                 titleList={item}
                                 onPressUpdate={() => router.push({
-                                    pathname: '/src/tabs/screens/UpdateTask',
+                                    pathname: '/tabs/screens/UpdateTask',
                                     params: { title: item, index: index, listIndex: listIndex }
                                 })}
                             />
@@ -70,7 +70,7 @@ const DetailsList = () => {
                         text='Agregar Tarea'
                         radius
                         onPress={()=> router.push({
-                                pathname: '/src/tabs/screens/AddTask',
+                                pathname: '/tabs/screens/AddTask',
                                 params: { title: title as string }
                             })}/>
                 </UiView>

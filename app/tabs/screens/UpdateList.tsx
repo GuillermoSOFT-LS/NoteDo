@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import {useCRUDList} from "@/app/src/hook/useCRUDList";
+import {useCRUDList} from "@/hook/useCRUDList";
 import {useLocalSearchParams, router} from "expo-router";
-import UiForm from "@/app/src/components/UiForm";
+import {UiForm} from "@/components/UiForm";
 
 
 

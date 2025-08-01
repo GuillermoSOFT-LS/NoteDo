@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import {useCRUDList} from "@/app/src/hook/useCRUDList";
-import UiForm from "@/app/src/components/UiForm";
+import {useCRUDList} from "@/hook/useCRUDList";
+import {UiForm} from "@/components/UiForm";
 
 const AddList = () => {
 

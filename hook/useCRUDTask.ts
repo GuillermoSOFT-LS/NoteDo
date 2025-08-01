@@ -1,5 +1,5 @@
 import React from "react";
-import { useFecht } from "@/app/src/hook/useFecht";
+import { useFecht } from "@/hook/useFecht";
 
 // La estructura de cada lista
 interface TaskList {
@@ -21,9 +21,9 @@ interface PropsRemove extends PropsShow {
 }
 
 interface PropsUpdate {
-    listIndex: number;     // índice de la lista principal (TaskList[])
-    taskIndex: number;     // índice de la tarea dentro de esa lista
-    Newtitle: string;      // nuevo nombre de la tarea
+    listIndex: number;
+    taskIndex: number;
+    Newtitle: string;
 }
 
 export const useCRUDTask = () => {

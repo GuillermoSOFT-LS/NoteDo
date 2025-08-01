@@ -1,6 +1,6 @@
-import {UiView} from "@/app/src/components/UiView";
-import {UiHeader} from "@/app/src/components/UiHeader";
-import {UiText} from "@/app/src/components/UiText";
+import {UiView} from "@/components/UiView";
+import {UiHeader} from "@/components/UiHeader";
+import {UiText} from "@/components/UiText";
 
 export default function Papeleria(){
     return (

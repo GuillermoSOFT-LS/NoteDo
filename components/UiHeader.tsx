@@ -1,8 +1,8 @@
 import {View, StyleSheet} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
-import {UiText} from "@/app/src/components/UiText";
+import {UiText} from "@/components/UiText";
 import {router} from "expo-router";
-import {UiViewAdd} from "@/app/src/components/UiViewAdd";
+import {UiViewAdd} from "@/components/UiViewAdd";
 
 interface Props {
     icon?: keyof  typeof Ionicons.glyphMap

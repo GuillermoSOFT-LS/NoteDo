@@ -1,7 +1,7 @@
-import { UiView } from "@/app/src/components/UiView";
-import { UiViewAdd } from "@/app/src/components/UiViewAdd";
-import { UiButtton } from "@/app/src/components/UiButtton";
-import { UiHeader } from "@/app/src/components/UiHeader";
+import { UiView } from "@/components/UiView";
+import { UiViewAdd } from "@/components/UiViewAdd";
+import { UiButtton } from "@/components/UiButtton";
+import { UiHeader } from "@/components/UiHeader";
 import {Ionicons} from "@expo/vector-icons";
 import {TextInput} from "react-native-paper";
 import React from "react";
@@ -16,7 +16,7 @@ interface Props {
     iconBtn: keyof typeof Ionicons.glyphMap
 }
 
-const UiForm = ({textBtn,onPress,onChangeText,value,headerTitle,iconBtn,placeholder}:Props) => {
+export const UiForm = ({textBtn,onPress,onChangeText,value,headerTitle,iconBtn,placeholder}:Props) => {
 
     return (
         <UiView bgColor>
@@ -54,5 +54,3 @@ const UiForm = ({textBtn,onPress,onChangeText,value,headerTitle,iconBtn,placehol
         </UiView>
     );
 };
-
-export default UiForm;

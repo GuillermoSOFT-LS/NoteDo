@@ -1,6 +1,6 @@
 import {Pressable, PressableProps, StyleSheet} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
-import {UiText} from "@/app/src/components/UiText";
+import {UiText} from "@/components/UiText";
 
 interface Props extends PressableProps{
     text: string
