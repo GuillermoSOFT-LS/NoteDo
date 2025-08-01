@@ -57,7 +57,7 @@ const DetailsList = () => {
                                 titleList={item}
                                 onPressUpdate={() => router.push({
                                     pathname: '/src/tabs/screens/UpdateTask',
-                                    params: { title: item, index: index }
+                                    params: { title: item, index: index, listIndex: listIndex }
                                 })}
                             />
                         )}

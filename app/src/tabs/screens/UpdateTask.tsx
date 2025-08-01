@@ -3,19 +3,18 @@ import {useLocalSearchParams, router} from "expo-router";
 import {useCRUDTask} from "@/app/src/hook/useCRUDTask";
 import UiForm from "@/app/src/components/UiForm";
 
-
-
 const UpdateTask = () => {
 
-    const {index, title} = useLocalSearchParams()
+    const {index, title,listIndex} = useLocalSearchParams()
     const [newTitle, setNewTitle] = useState(title as string);
 
     const { UpdateTask } = useCRUDTask();
 
     const handleSave = async () => {
         await UpdateTask({
-            indice: Number(index),
-            Item: newTitle
+            listIndex: Number(listIndex),
+            taskIndex: Number(index),
+            Newtitle: newTitle
         });
         router.back();
     };
@@ -33,4 +32,4 @@ const UpdateTask = () => {
     );
 };
 
-export default UpdateTask
+export default UpdateTask;

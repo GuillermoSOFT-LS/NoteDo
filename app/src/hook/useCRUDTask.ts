@@ -1,75 +1,91 @@
 import React from "react";
-import {useFecht} from "@/app/src/hook/useFecht";
+import { useFecht } from "@/app/src/hook/useFecht";
 
-interface PropsAdd{
+// La estructura de cada lista
+interface TaskList {
     title: string;
-    setTitle:  React.Dispatch<React.SetStateAction<string>>
+    tasks: string[];
+}
+
+interface PropsAdd {
+    title: string;
+    setTitle: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface PropsShow {
-    setList:  React.Dispatch<React.SetStateAction<string[]>>
+    setList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-interface PropsRemove extends PropsShow{
+interface PropsRemove extends PropsShow {
     indice: number;
 }
 
-interface PropsUpdate{
-    indice: number;
-    Item: string;
+interface PropsUpdate {
+    listIndex: number;     // índice de la lista principal (TaskList[])
+    taskIndex: number;     // índice de la tarea dentro de esa lista
+    Newtitle: string;      // nuevo nombre de la tarea
 }
 
 export const useCRUDTask = () => {
+    // ATENCIÓN: usamos el mismo STORAGE_KEY que useCRUDList
+    const { handleUpdateList, handleReadList } = useFecht({ STORAGE_KEY: "NoteList" });
 
-    const {handleUpdateList, handleReadList} = useFecht({STORAGE_KEY: 'NoteTask'})
-
-
-    //Funcion de agregar Listas
-    const AddTask = async ({title, setTitle}:PropsAdd) => {
-
-        if (title.trim() === ""){
-            alert('El campo no puede estar vacio')
-            return
+    // Agregar una nueva tarea a una lista
+    const AddTask = async ({ title, setTitle }: PropsAdd) => {
+        if (title.trim() === "") {
+            alert("El campo no puede estar vacío");
+            return;
         }
 
-        const lista = await handleReadList()
+        const listas: TaskList[] = await handleReadList();
 
-        lista.push(title)
+        // Suponemos que se quiere agregar a la última lista (esto deberías adaptar según tu lógica)
+        if (listas.length === 0) return;
 
-        setTitle("")
-        handleUpdateList(lista)
-    }
+        listas[listas.length - 1].tasks.push(title);
 
+        setTitle("");
+        await handleUpdateList(listas);
+    };
 
-    //Funcion Mostrar Listas
+    // Mostrar tareas (como array plano)
+    const ShowTask = async ({ setList }: PropsShow) => {
+        const listas: TaskList[] = await handleReadList();
+        const allTasks = listas.flatMap((l) => l.tasks);
+        setList(allTasks);
+    };
 
-    const ShowTask = async ({setList}:PropsShow)=> {
-        const lista = await handleReadList()
-        setList(lista)
-    }
+    // Eliminar una tarea por índice
+    const removeTask = async ({ indice, setList }: PropsRemove) => {
+        const listas: TaskList[] = await handleReadList();
 
-    //Funcion Elimar Listas
-    const removeTask = async ({indice, setList}:PropsRemove) => {
-        const lista = await handleReadList()
-        lista.splice(indice, 1)
-        handleUpdateList(lista)
-        setList(lista)
-    }
+        // Aquí también deberías especificar en qué lista se está borrando
+        if (listas.length === 0) return;
 
-    //Funcion de editar Listas
+        listas[listas.length - 1].tasks.splice(indice, 1); // <- adáptalo según sea necesario
 
-    const UpdateTask = async({indice,Item}:PropsUpdate) => {
-        const lista = await handleReadList()
-        lista[indice] = Item
-        await handleUpdateList(lista)
-    }
+        await handleUpdateList(listas);
+        setList(listas[listas.length - 1].tasks);
+    };
 
-    return{
+    // Actualizar el nombre de una tarea
+    const UpdateTask = async ({ listIndex, taskIndex, Newtitle }: PropsUpdate) => {
+        const listas: TaskList[] = await handleReadList();
+
+        if (!listas[listIndex]) return;
+        if (!listas[listIndex].tasks[taskIndex]) return;
+
+        listas[listIndex].tasks[taskIndex] = Newtitle;
+
+        await handleUpdateList(listas);
+    };
+
+    return {
         AddTask,
         ShowTask,
         removeTask,
-        UpdateTask
-    }
-}
+        UpdateTask,
+    };
+};
 
-export default useCRUDTask
+export default useCRUDTask;

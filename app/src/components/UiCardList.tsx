@@ -1,4 +1,4 @@
-import {View, ViewProps, StyleSheet, Pressable} from "react-native";
+import {View, ViewProps, StyleSheet, Pressable, Alert} from "react-native";
 import {UiText} from "@/app/src/components/UiText";
 import {UiButtton} from "@/app/src/components/UiButtton";
 import {router} from "expo-router";
@@ -11,20 +11,22 @@ interface Props extends ViewProps {
     onPressRemove?: () => void;
     onPressUpdate?: () => void;
     showChecked?: boolean;
+    onLongPress?: () => void;
 }
 
 
-export const UiCardList = ({titleList,onPressRemove,onPressUpdate,showChecked,...rest}:Props)=> {
+export const UiCardList = ({titleList,onPressRemove,onPressUpdate,showChecked,onLongPress,...rest}:Props)=> {
 
     const [Checked, setChecked] = useState(false)
 
     return (
         <View style={{paddingBottom: 10}}>
-            <Pressable style={[styles.container, {opacity: Checked ? 0.6 : 1}]} {...rest}
+            <Pressable style={[styles.container, {opacity: Checked ? 0.6 : 1}]}
+            onLongPress={onLongPress}
             onPress={()=> router.push({
                 pathname: '/src/tabs/screens/DetailsList',
                 params: { title: titleList, index: 0 }
-            })}>
+            })} {...rest}>
 
                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 5}}>
                     <UiText color='gray'>25/07/2025</UiText>
