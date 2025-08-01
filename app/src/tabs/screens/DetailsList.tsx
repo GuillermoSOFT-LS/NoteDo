@@ -64,7 +64,7 @@ const DetailsList = () => {
                     />
 
                     <UiButtton
-                        bgColor='green'
+                        bgColor='orange'
                         color='white'
                         icon='add'
                         text='Agregar Tarea'

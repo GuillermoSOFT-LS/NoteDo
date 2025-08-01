@@ -36,11 +36,7 @@ export default function Home() {
             <UiView bgColor margin>
                 <UiViewAdd justifyContent='space-between' flexRow paddingB="lg">
                     <UiText type="title" color="white">Listas</UiText>
-                    <UiButtton
-                        color="white"
-                        bgColor="green"
-                        icon="add-circle"
-                        text="Nueva lista"
+                    <UiButtton color="white" bgColor="orange" icon="add-circle" text="Nueva lista"
                         onPress={() => router.push("/src/tabs/screens/AddList")}
                     />
                 </UiViewAdd>

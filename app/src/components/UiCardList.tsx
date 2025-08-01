@@ -39,9 +39,9 @@ export const UiCardList = ({titleList,onPressRemove,onPressUpdate,showChecked,..
                     <UiViewAdd flexRow>
                         {showChecked ? <Checkbox status={Checked ? 'checked' : 'unchecked'} onPress={()=> setChecked(!Checked)} color='orange'/> : null}
 
-                        <UiText style={{textDecorationLine: Checked ? 'line-through' : 'none', maxWidth: 180}} type='text' color='orange'>{titleList}</UiText>
+                        <UiText style={{textDecorationLine: Checked ? 'line-through' : 'none', maxWidth: 180}} type='text' color='white'>{titleList}</UiText>
                     </UiViewAdd>
-                    <UiButtton border onPress={onPressUpdate} color='gray' bgColor='transparent' icon='create-outline' text='Editar'/>
+                    <UiButtton border onPress={onPressUpdate} color='orange' bgColor='transparent' icon='create-outline' text='Editar'/>
                 </UiViewAdd>
             </Pressable>
         </View>

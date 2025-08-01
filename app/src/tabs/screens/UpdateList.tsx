@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import { UiView } from "@/app/src/components/UiView";
-import { UiViewAdd } from "@/app/src/components/UiViewAdd";
-import { UiTextinput } from "@/app/src/components/UiTextinput";
-import { UiButtton } from "@/app/src/components/UiButtton";
-import { UiHeader } from "@/app/src/components/UiHeader";
 import {useCRUDList} from "@/app/src/hook/useCRUDList";
 import {useLocalSearchParams, router} from "expo-router";
+import UiForm from "@/app/src/components/UiForm";
 
 
 
@@ -21,30 +17,20 @@ const UpdateList = () => {
             indice: Number(index),
             Item: newTitle
         });
-        router.dismiss();
+        router.back();
     };
 
     return (
-        <UiView bgColor>
-            <UiHeader title='Editar Lista' icon='arrow-back' />
 
-            <UiView bgColor margin>
-                <UiViewAdd>
-                    <UiTextinput
-                        placeholder='Nuevo nombre de la lista'
-                        value={newTitle}
-                        onChangeText={setNewTitle}
-                    />
-                    <UiButtton
-                        icon='add'
-                        color='white'
-                        bgColor='green'
-                        text='Editar'
-                        onPress={handleSave}
-                    />
-                </UiViewAdd>
-            </UiView>
-        </UiView>
+            <UiForm
+                textBtn='Editar Lista'
+                onPress={handleSave}
+                onChangeText={setNewTitle}
+                placeholder='Nuevo nombre de la lista'
+                value={newTitle}
+                headerTitle='Editar Lista'
+                iconBtn='create-outline'
+            />
     );
 };
 

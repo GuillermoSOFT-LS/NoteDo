@@ -31,16 +31,13 @@ const UiForm = ({textBtn,onPress,onChangeText,value,headerTitle,iconBtn,placehol
                         right={<TextInput.Affix text="/100" />}
                         value={value}
                         onChangeText={onChangeText}
+                        textColor='#D8D8D8'
                         style={{
                             backgroundColor: '#000',
                         }}
                         theme={{
                             colors: {
-                                primary: 'green',
-                                secondary: 'white',
-                                text: 'white',
-                                placeholder: '#aaa',
-                                background: '#000',
+                                primary: 'orange',
                             },
                         }}
                     />
@@ -48,7 +45,7 @@ const UiForm = ({textBtn,onPress,onChangeText,value,headerTitle,iconBtn,placehol
                     <UiButtton
                         icon={iconBtn}
                         color='white'
-                        bgColor='green'
+                        bgColor='orange'
                         text={textBtn}
                         onPress={onPress}
                     />
