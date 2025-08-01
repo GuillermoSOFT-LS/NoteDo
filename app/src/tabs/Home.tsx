@@ -31,9 +31,9 @@ export default function Home() {
 
     return (
         <UiView bgColor>
-            <UiHeader title="NoteDo" />
+                <UiHeader title="NoteDo" icon2='book-outline' marginNull/>
 
-            <UiView bgColor margin>
+            <UiView bgColor margin insetNull>
                 <UiViewAdd justifyContent='space-between' flexRow paddingB="lg">
                     <UiText type="title" color="white">Listas</UiText>
                     <UiButtton color="white" bgColor="orange" icon="add-circle" text="Nueva lista"

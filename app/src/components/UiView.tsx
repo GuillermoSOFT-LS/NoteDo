@@ -4,16 +4,17 @@ import {useSafeAreaInsets} from "react-native-safe-area-context";
 interface Props extends ViewProps {
     margin?: boolean
     bgColor?: boolean
+    insetNull?: boolean
 }
 
-export const UiView = ({margin,bgColor,children}:Props)=> {
+export const UiView = ({margin,bgColor,children,insetNull}:Props)=> {
 
     const inset = useSafeAreaInsets();
 
     return (
         <View style={{
-            paddingBottom: inset.bottom,
-            paddingTop: inset.top,
+            paddingBottom: insetNull ? null : inset.bottom,
+            paddingTop: insetNull ? null : inset.top,
             flex: 1,
             backgroundColor: bgColor ? '#000' : '#fff'
         }}>

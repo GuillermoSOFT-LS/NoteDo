@@ -22,7 +22,7 @@ const UiForm = ({textBtn,onPress,onChangeText,value,headerTitle,iconBtn,placehol
         <UiView bgColor>
             <UiHeader title={headerTitle} icon='arrow-back' />
 
-            <UiView bgColor margin>
+            <UiView bgColor margin insetNull>
                 <UiViewAdd>
 
                     <TextInput
