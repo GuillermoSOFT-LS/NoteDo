@@ -42,7 +42,7 @@ export const useCRUDTask = () => {
         // Suponemos que se quiere agregar a la última lista (esto deberías adaptar según tu lógica)
         if (listas.length === 0) return;
 
-        listas[listas.length - 1].tasks.push(title);
+        listas[listas.length - 1].tasks = [title, ...listas[listas.length -1].tasks];
 
         setTitle("");
         await handleUpdateList(listas);

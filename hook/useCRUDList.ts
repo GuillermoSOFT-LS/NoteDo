@@ -51,7 +51,7 @@ export const useCRUDList = () => {
             return;
         }
         let lista: TaskList[] = normalizeList(await handleReadList());
-        lista.push({ title, tasks: [] });
+        lista =[{ title, tasks: [] }, ...lista];
         setTitle("");
         handleUpdateList(lista);
         router.back();

@@ -48,7 +48,7 @@ const DetailsList = () => {
 
                     <UiText color='gray' type='title' paddingB>Lista de Tareas</UiText>
                     <FlatList
-                        data={currentTasks}
+                        data={[...currentTasks].reverse()}
                         keyExtractor={(_, index) => index.toString()}
                         ListEmptyComponent={<UiListEmpty title='No hay tareas creadas'/>}
                         renderItem={({ index, item }) => (
