@@ -1,10 +1,17 @@
+// src/hook/useCRUDList.ts
 import React from "react";
 import { useFecht } from "@/hook/useFecht";
 import { router } from "expo-router";
 
-interface TaskList {
+interface Task {
     title: string;
-    tasks: string[];
+    createdAt: string;
+}
+
+export interface TaskList {
+    title: string;
+    createdAt: string;
+    tasks: Task[];
 }
 
 interface PropsAdd {
@@ -35,25 +42,29 @@ interface PropsAddTask {
 export const useCRUDList = () => {
     const { handleUpdateList, handleReadList } = useFecht({ STORAGE_KEY: 'NoteList' });
 
-    // Normaliza los datos leídos para asegurar TaskList[]
     const normalizeList = (data: any): TaskList[] => {
         if (!Array.isArray(data)) return [];
-        if (data.length > 0 && typeof data[0] === "string") {
-            // Migrar de string[] a TaskList[]
-            return data.map((title: string) => ({ title, tasks: [] }));
-        }
-        return data as TaskList[];
+        return data.map((item: any) => ({
+            title: item.title,
+            createdAt: item.createdAt || new Date().toISOString(),
+            tasks: (item.tasks || []).map((t: any) => ({
+                title: t.title || t,
+                createdAt: t.createdAt || new Date().toISOString(),
+            })),
+        }));
     };
 
     const AddList = async ({ title, setTitle }: PropsAdd) => {
-        if (title.trim() === "") {
-            alert('El campo no puede estar vacio');
-            return;
-        }
-        let lista: TaskList[] = normalizeList(await handleReadList());
-        lista.push({ title, tasks: [] });
+        if (title.trim() === "") return alert("El campo no puede estar vacío");
+        const lista: TaskList[] = normalizeList(await handleReadList());
+        const nuevaLista: TaskList = {
+            title,
+            createdAt: new Date().toISOString(),
+            tasks: [],
+        };
+        const updated = [nuevaLista, ...lista];
         setTitle("");
-        handleUpdateList(lista);
+        await handleUpdateList(updated);
         router.back();
     };
 
@@ -63,35 +74,28 @@ export const useCRUDList = () => {
     };
 
     const removeList = async ({ indice, setList }: PropsRemove) => {
-        let lista: TaskList[] = normalizeList(await handleReadList());
+        const lista: TaskList[] = normalizeList(await handleReadList());
         lista.splice(indice, 1);
-        handleUpdateList(lista);
+        await handleUpdateList(lista);
         setList(lista);
     };
 
     const UpdateList = async ({ indice, Item }: PropsUpdate) => {
-        let lista: TaskList[] = normalizeList(await handleReadList());
-        lista[indice].title = Item;
-        await handleUpdateList(lista);
+        const lista: TaskList[] = normalizeList(await handleReadList());
+        if (lista[indice]) {
+            lista[indice].title = Item;
+            await handleUpdateList(lista);
+        }
     };
 
     const AddTaskToList = async ({ listIndex, taskTitle, setTaskTitle, setList }: PropsAddTask) => {
-        if (taskTitle.trim() === "") {
-            alert('El campo no puede estar vacio');
-            return;
-        }
-        let lista: TaskList[] = normalizeList(await handleReadList());
-        lista[listIndex].tasks.push(taskTitle);
-        setTaskTitle("");
+        if (taskTitle.trim() === "") return alert("El campo no puede estar vacío");
+        const lista: TaskList[] = normalizeList(await handleReadList());
+        lista[listIndex].tasks.unshift({ title: taskTitle, createdAt: new Date().toISOString() });
         await handleUpdateList(lista);
+        setTaskTitle("");
         setList([...lista]);
     };
 
-    return {
-        AddList,
-        ShowList,
-        removeList,
-        UpdateList,
-        AddTaskToList
-    };
+    return { AddList, ShowList, removeList, UpdateList, AddTaskToList };
 };

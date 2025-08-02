@@ -1,10 +1,15 @@
 import React from "react";
 import { useFecht } from "@/hook/useFecht";
 
-// La estructura de cada lista
+interface Task {
+    title: string;
+    createdAt: string;
+}
+
 interface TaskList {
     title: string;
-    tasks: string[];
+    createdAt: string;
+    tasks: Task[];
 }
 
 interface PropsAdd {
@@ -13,7 +18,7 @@ interface PropsAdd {
 }
 
 interface PropsShow {
-    setList: React.Dispatch<React.SetStateAction<string[]>>;
+    setList: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
 interface PropsRemove extends PropsShow {
@@ -27,10 +32,9 @@ interface PropsUpdate {
 }
 
 export const useCRUDTask = () => {
-    // ATENCIÓN: usamos el mismo STORAGE_KEY que useCRUDList
     const { handleUpdateList, handleReadList } = useFecht({ STORAGE_KEY: "NoteList" });
 
-    // Agregar una nueva tarea a una lista
+    // Agregar una nueva tarea a la última lista (si decides usarlo)
     const AddTask = async ({ title, setTitle }: PropsAdd) => {
         if (title.trim() === "") {
             alert("El campo no puede estar vacío");
@@ -39,43 +43,44 @@ export const useCRUDTask = () => {
 
         const listas: TaskList[] = await handleReadList();
 
-        // Suponemos que se quiere agregar a la última lista (esto deberías adaptar según tu lógica)
         if (listas.length === 0) return;
 
-        listas[listas.length - 1].tasks.push(title);
+        listas[listas.length - 1].tasks = [
+            { title, createdAt: new Date().toISOString() },
+            ...listas[listas.length - 1].tasks,
+        ];
 
         setTitle("");
         await handleUpdateList(listas);
     };
 
-    // Mostrar tareas (como array plano)
+    // Mostrar tareas (array plano)
     const ShowTask = async ({ setList }: PropsShow) => {
         const listas: TaskList[] = await handleReadList();
         const allTasks = listas.flatMap((l) => l.tasks);
         setList(allTasks);
     };
 
-    // Eliminar una tarea por índice
+    // Eliminar una tarea por índice (en la última lista)
     const removeTask = async ({ indice, setList }: PropsRemove) => {
         const listas: TaskList[] = await handleReadList();
 
-        // Aquí también deberías especificar en qué lista se está borrando
         if (listas.length === 0) return;
 
-        listas[listas.length - 1].tasks.splice(indice, 1); // <- adáptalo según sea necesario
+        listas[listas.length - 1].tasks.splice(indice, 1);
 
         await handleUpdateList(listas);
         setList(listas[listas.length - 1].tasks);
     };
 
-    // Actualizar el nombre de una tarea
+    // Actualizar el título de una tarea
     const UpdateTask = async ({ listIndex, taskIndex, Newtitle }: PropsUpdate) => {
         const listas: TaskList[] = await handleReadList();
 
         if (!listas[listIndex]) return;
         if (!listas[listIndex].tasks[taskIndex]) return;
 
-        listas[listIndex].tasks[taskIndex] = Newtitle;
+        listas[listIndex].tasks[taskIndex].title = Newtitle;
 
         await handleUpdateList(listas);
     };
