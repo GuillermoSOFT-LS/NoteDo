@@ -1,96 +1,57 @@
-import React from "react";
-import { useFecht } from "@/hook/useFecht";
+import { storageService, StorageKeys } from '@/services/storageService';
+import { TaskList } from './useCRUDList'; // Reutilizamos la interfaz de la lista
 
-interface Task {
-    title: string;
-    createdAt: string;
-}
-
-interface TaskList {
-    title: string;
-    createdAt: string;
-    tasks: Task[];
-}
-
-interface PropsAdd {
-    title: string;
-    setTitle: React.Dispatch<React.SetStateAction<string>>;
-}
-
-interface PropsShow {
-    setList: React.Dispatch<React.SetStateAction<Task[]>>;
-}
-
-interface PropsRemove extends PropsShow {
-    indice: number;
-}
-
-interface PropsUpdate {
-    listIndex: number;
+// --- Interfaces de Props para las funciones del hook ---
+interface PropsUpdateTask {
+    listId: string;
     taskIndex: number;
-    Newtitle: string;
+    newTitle: string;
 }
 
+interface PropsToggleTask {
+    listId: string;
+    taskIndex: number;
+}
+
+interface PropsRemoveTask {
+    listId: string;
+    taskIndex: number;
+}
+
+// --- Hook principal ---
 export const useCRUDTask = () => {
-    const { handleUpdateList, handleReadList } = useFecht({ STORAGE_KEY: "NoteList" });
 
-    // Agregar una nueva tarea a la última lista (si decides usarlo)
-    const AddTask = async ({ title, setTitle }: PropsAdd) => {
-        if (title.trim() === "") {
-            alert("El campo no puede estar vacío");
-            return;
+    const UpdateTask = async ({ listId, taskIndex, newTitle }: PropsUpdateTask) => {
+        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+        const listToUpdate = lists.find(list => list.id === listId);
+
+        if (listToUpdate && listToUpdate.tasks[taskIndex]) {
+            listToUpdate.tasks[taskIndex].title = newTitle;
+            await storageService.set(StorageKeys.LISTS, lists);
         }
-
-        const listas: TaskList[] = await handleReadList();
-
-        if (listas.length === 0) return;
-
-        listas[listas.length - 1].tasks = [
-            { title, createdAt: new Date().toISOString() },
-            ...listas[listas.length - 1].tasks,
-        ];
-
-        setTitle("");
-        await handleUpdateList(listas);
     };
 
-    // Mostrar tareas (array plano)
-    const ShowTask = async ({ setList }: PropsShow) => {
-        const listas: TaskList[] = await handleReadList();
-        const allTasks = listas.flatMap((l) => l.tasks);
-        setList(allTasks);
+    const ToggleTaskCompleted = async ({ listId, taskIndex }: PropsToggleTask) => {
+        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+        const listToUpdate = lists.find(list => list.id === listId);
+
+        if (listToUpdate && listToUpdate.tasks[taskIndex]) {
+            const currentStatus = listToUpdate.tasks[taskIndex].isCompleted;
+            listToUpdate.tasks[taskIndex].isCompleted = !currentStatus;
+            await storageService.set(StorageKeys.LISTS, lists);
+        }
     };
 
-    // Eliminar una tarea por índice (en la última lista)
-    const removeTask = async ({ indice, setList }: PropsRemove) => {
-        const listas: TaskList[] = await handleReadList();
+    const removeTask = async ({ listId, taskIndex }: PropsRemoveTask) => {
+        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+        const listToUpdate = lists.find(list => list.id === listId);
 
-        if (listas.length === 0) return;
-
-        listas[listas.length - 1].tasks.splice(indice, 1);
-
-        await handleUpdateList(listas);
-        setList(listas[listas.length - 1].tasks);
+        if (listToUpdate) {
+            // Por ahora se elimina, pero la lógica de la papelera la agregaremos en un próximo paso
+            listToUpdate.tasks.splice(taskIndex, 1);
+            await storageService.set(StorageKeys.LISTS, lists);
+        }
     };
 
-    // Actualizar el título de una tarea
-    const UpdateTask = async ({ listIndex, taskIndex, Newtitle }: PropsUpdate) => {
-        const listas: TaskList[] = await handleReadList();
-
-        if (!listas[listIndex]) return;
-        if (!listas[listIndex].tasks[taskIndex]) return;
-
-        listas[listIndex].tasks[taskIndex].title = Newtitle;
-
-        await handleUpdateList(listas);
-    };
-
-    return {
-        AddTask,
-        ShowTask,
-        removeTask,
-        UpdateTask,
-    };
+    return { UpdateTask, ToggleTaskCompleted, removeTask };
 };
-
-export default useCRUDTask;
