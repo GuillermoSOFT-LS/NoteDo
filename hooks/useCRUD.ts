@@ -1,23 +1,22 @@
-import React from 'react';
-import { Alert } from 'react-native';
-import { router } from 'expo-router';
-import { storageService, StorageKeys } from '@/services/storageService';
+import { StorageKeys, storageService } from '@/services/storageService';
 import { validationService } from '@/services/validationService';
 import {
+    AddListParams,
+    AddTaskParams,
+    ItemType,
+    RemoveListParams,
+    RemoveTaskParams,
+    ShowListParams,
     Task,
     TaskList,
-    TrashItem,
-    AddListParams,
-    ShowListParams,
-    RemoveListParams,
-    UpdateListParams,
-    AddTaskParams,
-    UpdateTaskParams,
     ToggleTaskParams,
-    RemoveTaskParams,
-    ItemType
+    TrashItem,
+    UpdateListParams,
+    UpdateTaskParams
 } from '@/types/interfaces';
-import { uuid } from 'uuidv4';
+import { generateId } from '@/utils/generateId';
+import { router } from 'expo-router';
+import { Alert } from 'react-native';
 
 export const useCRUD = () => {
     
@@ -49,7 +48,7 @@ export const useCRUD = () => {
             }
 
             const newList: TaskList = {
-                id: uuid(),
+                id: generateId(),
                 title: sanitizedTitle,
                 createdAt: new Date().toISOString(),
                 tasks: [],
@@ -132,7 +131,7 @@ export const useCRUD = () => {
 
         // Crear item de papelera
         const trashItem: TrashItem = {
-            id: uuid(),
+            id: generateId(),
             originalId: listToRemove.id,
             type: ItemType.LIST,
             data: listToRemove,
@@ -178,7 +177,7 @@ export const useCRUD = () => {
             }
 
             const newTask: Task = {
-                id: uuid(),
+                id: generateId(),
                 title: sanitizedTitle,
                 isCompleted: false,
                 createdAt: new Date().toISOString(),
@@ -273,7 +272,7 @@ export const useCRUD = () => {
 
             // Crear item de papelera
             const trashItem: TrashItem = {
-                id: uuid(),
+                id: generateId(),
                 originalId: taskToRemove.id,
                 type: ItemType.TASK,
                 data: taskToRemove,

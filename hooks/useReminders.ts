@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { storageService, StorageKeys } from '@/services/storageService';
 import { notificationService } from '@/services/notificationService';
 import { Reminder, Task, TaskList } from '@/types/interfaces';
-import { uuid } from 'uuidv4';
+import { generateId } from '@/utils/generateId';
 
 export const useReminders = () => {
   const [reminders, setReminders] = useState<Reminder[]>([]);
@@ -22,7 +22,7 @@ export const useReminders = () => {
 
       // Crear recordatorio
       const newReminder: Reminder = {
-        id: uuid(),
+        id: generateId(),
         date,
         time,
         isActive: true,

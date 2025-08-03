@@ -1,10 +1,10 @@
-import { View, StyleSheet, Pressable } from "react-native";
-import { UiText } from "@/components/UiText";
 import { UiButtton } from "@/components/UiButtton";
+import { UiText } from "@/components/UiText";
 import { UiViewAdd } from "@/components/UiViewAdd";
-import { Checkbox } from "react-native-paper";
-import { useState } from "react";
 import { UiCardListProps } from "@/types/interfaces";
+import { useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import { Checkbox } from "react-native-paper";
 
 export const UiCardList = ({
                                titleList,
@@ -52,14 +52,35 @@ export const UiCardList = ({
                             />
                         )}
                         <UiText
-                            style={{ textDecorationLine: checked ? "line-through" : "none", maxWidth: 180 }}
+                            style={{ textDecorationLine: checked ? "line-through" : "none", maxWidth: 140 }}
                             type="text"
                             color="white"
                         >
                             {titleList}
                         </UiText>
                     </UiViewAdd>
-                    <UiButtton border onPress={onPressUpdate} color="orange" bgColor="transparent" icon="create-outline" text="Editar" />
+                    <UiViewAdd flexRow>
+                        {onPressUpdate && (
+                            <UiButtton
+                                border
+                                onPress={onPressUpdate}
+                                color="orange"
+                                bgColor="transparent"
+                                icon="create-outline"
+                                text="Editar"
+                            />
+                        )}
+                        {onPressRemove && (
+                            <UiButtton
+                                border
+                                onPress={onPressRemove}
+                                color="orange"
+                                bgColor="transparent"
+                                icon="trash-outline"
+                                text="Eliminar"
+                            />
+                        )}
+                    </UiViewAdd>
                 </UiViewAdd>
             </Pressable>
         </View>

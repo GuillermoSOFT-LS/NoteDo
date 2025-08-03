@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
-import {router, useLocalSearchParams} from "expo-router";
+import { UiForm } from "@/components/UiForm";
 import { useCRUD } from "@/hooks/useCRUD";
-import {UiForm} from "@/components/UiForm";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useState } from 'react';
 
 const AddTask = () => {
     const { listId } = useLocalSearchParams();
     const [titleTask, setTitleTask] = useState("");
     const { addTaskToList } = useCRUD();
 
-    const handleAddTask = () => {
+    const handleAddTask = async () => {
         if (!listId) return;
-        addTaskToList({
+        await addTaskToList({
             listId: listId as string,
             taskTitle: titleTask,
             setTaskTitle: setTitleTask
         });
-        router.back();
+        
+        router.replace({
+            pathname: "/tabs/screens/DetailsList",
+            params: {
+                listId: listId as string,
+            },
+        });
     };
 
     return (

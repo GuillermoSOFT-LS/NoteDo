@@ -1,5 +1,5 @@
-import { Alert } from 'react-native';
 import { Reminder } from '@/types/interfaces';
+import { Alert } from 'react-native';
 
 // Servicio de notificaciones simplificado (sin expo-notifications por ahora)
 export const notificationService = {

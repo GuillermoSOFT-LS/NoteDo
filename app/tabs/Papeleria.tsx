@@ -1,15 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import { FlatList, Alert } from 'react-native';
-import { useFocusEffect } from 'expo-router';
-import { UiView } from "@/components/UiView";
-import { UiHeader } from "@/components/UiHeader";
-import { UiText } from "@/components/UiText";
-import { UiCardList } from "@/components/UiCardList";
-import { UiListEmpty } from "@/components/UiListEmpty";
-import { UiViewAdd } from "@/components/UiViewAdd";
 import { UiButtton } from "@/components/UiButtton";
+import { UiCardList } from "@/components/UiCardList";
+import { UiHeader } from "@/components/UiHeader";
+import { UiListEmpty } from "@/components/UiListEmpty";
+import { UiText } from "@/components/UiText";
+import { UiView } from "@/components/UiView";
+import { UiViewAdd } from "@/components/UiViewAdd";
 import { useCRUD } from "@/hooks/useCRUD";
 import { TrashItem } from "@/types/interfaces";
+import { useFocusEffect } from 'expo-router';
+import React, { useCallback, useState } from 'react';
+import { Alert, FlatList } from 'react-native';
 
 export default function Papeleria() {
     const [trashItems, setTrashItems] = useState<TrashItem[]>([]);
@@ -74,7 +74,6 @@ export default function Papeleria() {
                     onPress: async () => {
                         const success = await deleteFromTrashPermanently(itemId, type);
                         if (success) {
-                            Alert.alert('Eliminado', 'Elemento eliminado permanentemente');
                             loadTrashItems();
                         }
                     }
@@ -131,7 +130,6 @@ export default function Papeleria() {
                 isSelected={isSelected}
                 onPress={() => isSelectionMode ? toggleSelection(item.id) : undefined}
                 onLongPress={() => handleLongPress(item.id)}
-                onPressUpdate={() => handleRestore(item.id, item.type)}
                 onPressRemove={() => handleDeletePermanently(item.id, item.type)}
             />
         );
@@ -146,17 +144,17 @@ export default function Papeleria() {
 
             <UiView margin bgColor insetNull>
                 {!isSelectionMode && (
-                    <UiViewAdd justifyContent="space-between" flexRow paddingB="lg">
+                    <UiViewAdd paddingB="lg">
                         <UiText type="title" color="white">Elementos eliminados</UiText>
                         <UiText type="text" color="gray">
-                            {trashItems.length} elementos
+                             elementos: {trashItems.length}
                         </UiText>
                     </UiViewAdd>
                 )}
 
                 {isSelectionMode && (
                     <>
-                        <UiViewAdd justifyContent="flex-end" flexRow paddingB="md">
+                        <UiViewAdd justifyContent="center" flexRow paddingB="lg">
                             <UiButtton
                                 color="orange"
                                 bgColor="transparent"
@@ -165,8 +163,7 @@ export default function Papeleria() {
                                 text="Cancelar"
                                 onPress={exitSelectionMode}
                             />
-                        </UiViewAdd>
-                        <UiViewAdd justifyContent="space-between" flexRow paddingB="lg">
+                    
                             <UiButtton
                                 color="white"
                                 bgColor="orange"
@@ -175,7 +172,7 @@ export default function Papeleria() {
                                 onPress={handleBulkRestore}
                             />
                             <UiButtton
-                                color="white"
+                                color="orange"
                                 bgColor="red"
                                 icon="trash"
                                 text="Eliminar"
