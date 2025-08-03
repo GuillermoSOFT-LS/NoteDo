@@ -85,6 +85,15 @@ const DetailsList = () => {
                                     },
                                 })
                             }
+                            onPress={() =>
+                                router.push({
+                                    pathname: '/tabs/screens/AddReminder',
+                                    params: {
+                                        taskId: item.id,
+                                        taskTitle: item.title,
+                                    },
+                                })
+                            }
                         />
                     )}
                 />

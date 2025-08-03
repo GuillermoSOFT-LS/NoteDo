@@ -1,14 +1,16 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { storageService, StorageKeys } from '@/services/storageService';
-import { 
-    Task, 
-    TaskList, 
+import { validationService } from '@/services/validationService';
+import {
+    Task,
+    TaskList,
     TrashItem,
-    AddListParams, 
-    ShowListParams, 
-    RemoveListParams, 
-    UpdateListParams, 
+    AddListParams,
+    ShowListParams,
+    RemoveListParams,
+    UpdateListParams,
     AddTaskParams,
     UpdateTaskParams,
     ToggleTaskParams,
@@ -22,46 +24,103 @@ export const useCRUD = () => {
     // ========== FUNCIONES DE LISTAS ==========
     
     const addList = async ({ title, setTitle }: AddListParams) => {
-        if (title.trim() === '') {
-            return alert('El campo no puede estar vacío');
+        try {
+            // Sanitizar título
+            const sanitizedTitle = validationService.sanitizeText(title);
+            
+            // Validar título
+            const titleValidation = validationService.validateListTitle(sanitizedTitle);
+            if (!titleValidation.isValid) {
+                Alert.alert('Error', titleValidation.error);
+                return;
+            }
+
+            const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+            const existingTitles = lists.map(list => list.title);
+
+            // Validar duplicados
+            const duplicateValidation = validationService.validateDuplicateTitle(
+                sanitizedTitle,
+                existingTitles
+            );
+            if (!duplicateValidation.isValid) {
+                Alert.alert('Error', duplicateValidation.error);
+                return;
+            }
+
+            const newList: TaskList = {
+                id: uuid(),
+                title: sanitizedTitle,
+                createdAt: new Date().toISOString(),
+                tasks: [],
+            };
+            
+            const updatedLists = [newList, ...lists];
+            setTitle('');
+            await storageService.set(StorageKeys.LISTS, updatedLists);
+            router.back();
+        } catch (error) {
+            console.error('Error creando lista:', error);
+            Alert.alert('Error', 'No se pudo crear la lista');
         }
-
-        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
-
-        // Validación de nombres de listas duplicados
-        if (lists.some(list => list.title.toLowerCase() === title.toLowerCase())) {
-            return alert('Ya existe una lista con este nombre.');
-        }
-
-        const newList: TaskList = {
-            id: uuid(),
-            title,
-            createdAt: new Date().toISOString(),
-            tasks: [],
-        };
-        
-        const updatedLists = [newList, ...lists];
-        setTitle('');
-        await storageService.set(StorageKeys.LISTS, updatedLists);
-        router.back();
     };
 
     const showLists = async ({ setList }: ShowListParams) => {
-        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
-        setList(lists);
+        try {
+            const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+            setList(lists);
+        } catch (error) {
+            console.error('Error cargando listas:', error);
+            Alert.alert('Error', 'No se pudieron cargar las listas');
+            setList([]);
+        }
     };
 
     const updateList = async ({ id, newTitle }: UpdateListParams) => {
-        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
-        const listToUpdate = lists.find(list => list.id === id);
-
-        if (listToUpdate) {
-            // Validación de nombres de listas duplicados
-            if (lists.some(list => list.title.toLowerCase() === newTitle.toLowerCase() && list.id !== id)) {
-                return alert('Ya existe una lista con este nombre.');
+        try {
+            // Validar ID
+            const idValidation = validationService.validateId(id);
+            if (!idValidation.isValid) {
+                Alert.alert('Error', idValidation.error);
+                return;
             }
-            listToUpdate.title = newTitle;
+
+            // Sanitizar título
+            const sanitizedTitle = validationService.sanitizeText(newTitle);
+            
+            // Validar título
+            const titleValidation = validationService.validateListTitle(sanitizedTitle);
+            if (!titleValidation.isValid) {
+                Alert.alert('Error', titleValidation.error);
+                return;
+            }
+
+            const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+            const listToUpdate = lists.find(list => list.id === id);
+
+            if (!listToUpdate) {
+                Alert.alert('Error', 'Lista no encontrada');
+                return;
+            }
+
+            const existingTitles = lists.map(list => list.title);
+            
+            // Validar duplicados
+            const duplicateValidation = validationService.validateDuplicateTitle(
+                sanitizedTitle,
+                existingTitles,
+                listToUpdate.title
+            );
+            if (!duplicateValidation.isValid) {
+                Alert.alert('Error', duplicateValidation.error);
+                return;
+            }
+
+            listToUpdate.title = sanitizedTitle;
             await storageService.set(StorageKeys.LISTS, lists);
+        } catch (error) {
+            console.error('Error actualizando lista:', error);
+            Alert.alert('Error', 'No se pudo actualizar la lista');
         }
     };
 
@@ -92,17 +151,35 @@ export const useCRUD = () => {
     // ========== FUNCIONES DE TAREAS ==========
 
     const addTaskToList = async ({ listId, taskTitle, setTaskTitle }: AddTaskParams) => {
-        if (taskTitle.trim() === '') {
-            return alert('El campo no puede estar vacío');
-        }
+        try {
+            // Validar ID de lista
+            const idValidation = validationService.validateId(listId);
+            if (!idValidation.isValid) {
+                Alert.alert('Error', idValidation.error);
+                return;
+            }
 
-        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
-        const listIndex = lists.findIndex(list => list.id === listId);
+            // Sanitizar título
+            const sanitizedTitle = validationService.sanitizeText(taskTitle);
+            
+            // Validar título
+            const titleValidation = validationService.validateTaskTitle(sanitizedTitle);
+            if (!titleValidation.isValid) {
+                Alert.alert('Error', titleValidation.error);
+                return;
+            }
 
-        if (listIndex !== -1) {
+            const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+            const listIndex = lists.findIndex(list => list.id === listId);
+
+            if (listIndex === -1) {
+                Alert.alert('Error', 'Lista no encontrada');
+                return;
+            }
+
             const newTask: Task = {
                 id: uuid(),
-                title: taskTitle,
+                title: sanitizedTitle,
                 isCompleted: false,
                 createdAt: new Date().toISOString(),
             };
@@ -110,27 +187,80 @@ export const useCRUD = () => {
             lists[listIndex].tasks.unshift(newTask);
             await storageService.set(StorageKeys.LISTS, lists);
             setTaskTitle('');
+        } catch (error) {
+            console.error('Error agregando tarea:', error);
+            Alert.alert('Error', 'No se pudo agregar la tarea');
         }
     };
 
     const updateTask = async ({ listId, taskIndex, newTitle }: UpdateTaskParams) => {
-        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
-        const listToUpdate = lists.find(list => list.id === listId);
+        try {
+            // Validar ID de lista
+            const idValidation = validationService.validateId(listId);
+            if (!idValidation.isValid) {
+                Alert.alert('Error', idValidation.error);
+                return;
+            }
 
-        if (listToUpdate && listToUpdate.tasks[taskIndex]) {
-            listToUpdate.tasks[taskIndex].title = newTitle;
+            // Sanitizar título
+            const sanitizedTitle = validationService.sanitizeText(newTitle);
+            
+            // Validar título
+            const titleValidation = validationService.validateTaskTitle(sanitizedTitle);
+            if (!titleValidation.isValid) {
+                Alert.alert('Error', titleValidation.error);
+                return;
+            }
+
+            const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+            const listToUpdate = lists.find(list => list.id === listId);
+
+            if (!listToUpdate) {
+                Alert.alert('Error', 'Lista no encontrada');
+                return;
+            }
+
+            if (!listToUpdate.tasks[taskIndex]) {
+                Alert.alert('Error', 'Tarea no encontrada');
+                return;
+            }
+
+            listToUpdate.tasks[taskIndex].title = sanitizedTitle;
             await storageService.set(StorageKeys.LISTS, lists);
+        } catch (error) {
+            console.error('Error actualizando tarea:', error);
+            Alert.alert('Error', 'No se pudo actualizar la tarea');
         }
     };
 
     const toggleTaskCompleted = async ({ listId, taskIndex }: ToggleTaskParams) => {
-        const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
-        const listToUpdate = lists.find(list => list.id === listId);
+        try {
+            // Validar ID de lista
+            const idValidation = validationService.validateId(listId);
+            if (!idValidation.isValid) {
+                Alert.alert('Error', idValidation.error);
+                return;
+            }
 
-        if (listToUpdate && listToUpdate.tasks[taskIndex]) {
+            const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
+            const listToUpdate = lists.find(list => list.id === listId);
+
+            if (!listToUpdate) {
+                Alert.alert('Error', 'Lista no encontrada');
+                return;
+            }
+
+            if (!listToUpdate.tasks[taskIndex]) {
+                Alert.alert('Error', 'Tarea no encontrada');
+                return;
+            }
+
             const currentStatus = listToUpdate.tasks[taskIndex].isCompleted;
             listToUpdate.tasks[taskIndex].isCompleted = !currentStatus;
             await storageService.set(StorageKeys.LISTS, lists);
+        } catch (error) {
+            console.error('Error alternando estado de tarea:', error);
+            Alert.alert('Error', 'No se pudo cambiar el estado de la tarea');
         }
     };
 
