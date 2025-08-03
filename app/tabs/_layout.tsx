@@ -31,7 +31,7 @@ export default function RootTabs() {
             <Tabs.Screen name='screens/AddTask' options={{href: null}}/>
             <Tabs.Screen name='screens/DetailsList' options={{href: null}}/>
             <Tabs.Screen name='screens/UpdateList' options={{href: null}}/>
-            <Tabs.Screen name='screens/UpdateTask' options={{href: null}}/>
+            <Tabs.Screen name='screens/TaskDetails' options={{href: null}}/>
         </Tabs>
     )
 }

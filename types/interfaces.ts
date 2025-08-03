@@ -3,6 +3,7 @@
 export interface Task {
     id: string;
     title: string;
+    description?: string;
     isCompleted: boolean;
     createdAt: string;
     reminder?: Reminder;
@@ -43,6 +44,7 @@ export interface UiCardListProps {
     showChecked?: boolean;
     isChecked?: boolean;
     isSelected?: boolean;
+    reminder?: Reminder;
 }
 
 // Props para hooks
@@ -67,13 +69,16 @@ export interface UpdateListParams {
 export interface AddTaskParams {
     listId: string;
     taskTitle: string;
+    taskDescription?: string;
     setTaskTitle: React.Dispatch<React.SetStateAction<string>>;
+    setTaskDescription?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface UpdateTaskParams {
     listId: string;
     taskIndex: number;
     newTitle: string;
+    newDescription?: string;
 }
 
 export interface ToggleTaskParams {

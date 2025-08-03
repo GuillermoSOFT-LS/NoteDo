@@ -17,6 +17,7 @@ export const UiCardList = ({
                                isChecked = false,
                                isSelected = false,
                                onLongPress,
+                               reminder,
                            }: UiCardListProps) => {
     const [checked, setChecked] = useState(isChecked);
     return (
@@ -34,9 +35,20 @@ export const UiCardList = ({
                 onPress={onPress}
             >
                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingBottom: 5 }}>
-                    <UiText color="gray">
-                        {createdAt ? new Date(createdAt).toLocaleDateString("es-ES") : "Fecha desconocida"}
-                    </UiText>
+                    {reminder ? (
+                        <UiText color="orange">
+                            📅 {new Date(`${reminder.date}T${reminder.time}`).toLocaleDateString("es-ES", {
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}
+                        </UiText>
+                    ) : (
+                        <UiText color="gray">
+                            {createdAt ? new Date(createdAt).toLocaleDateString("es-ES") : "Fecha desconocida"}
+                        </UiText>
+                    )}
                 </View>
 
                 <UiViewAdd flexRow justifyContent="space-between" paddingB="md">

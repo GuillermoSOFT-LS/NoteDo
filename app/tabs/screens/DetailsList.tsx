@@ -156,15 +156,15 @@ const DetailsList = () => {
                                 showChecked={!isSelectionMode}
                                 isChecked={item.isCompleted}
                                 isSelected={isSelected}
+                                reminder={item.reminder}
                                 onPressCheck={!isSelectionMode ? () => handleToggleTask(index) : undefined}
                                 onLongPress={() => handleLongPress(index)}
                                 onPressUpdate={!isSelectionMode ? () =>
                                     router.push({
-                                        pathname: '/tabs/screens/UpdateTask',
+                                        pathname: '/tabs/screens/TaskDetails',
                                         params: {
-                                            title: item.title,
-                                            index: index,
                                             listId: listId,
+                                            taskIndex: index,
                                         },
                                     }) : undefined
                                 }
@@ -173,10 +173,10 @@ const DetailsList = () => {
                                         toggleTaskSelection(index);
                                     } else {
                                         router.push({
-                                            pathname: '/tabs/screens/AddReminder',
+                                            pathname: '/tabs/screens/TaskDetails',
                                             params: {
-                                                taskId: item.id,
-                                                taskTitle: item.title,
+                                                listId: listId,
+                                                taskIndex: index,
                                             },
                                         });
                                     }

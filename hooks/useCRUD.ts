@@ -149,7 +149,7 @@ export const useCRUD = () => {
 
     // ========== FUNCIONES DE TAREAS ==========
 
-    const addTaskToList = async ({ listId, taskTitle, setTaskTitle }: AddTaskParams) => {
+    const addTaskToList = async ({ listId, taskTitle, taskDescription, setTaskTitle, setTaskDescription }: AddTaskParams) => {
         try {
             // Validar ID de lista
             const idValidation = validationService.validateId(listId);
@@ -168,6 +168,9 @@ export const useCRUD = () => {
                 return;
             }
 
+            // Sanitizar descripción si existe
+            const sanitizedDescription = taskDescription ? validationService.sanitizeText(taskDescription) : undefined;
+
             const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
             const listIndex = lists.findIndex(list => list.id === listId);
 
@@ -179,6 +182,7 @@ export const useCRUD = () => {
             const newTask: Task = {
                 id: generateId(),
                 title: sanitizedTitle,
+                description: sanitizedDescription,
                 isCompleted: false,
                 createdAt: new Date().toISOString(),
             };
@@ -186,13 +190,14 @@ export const useCRUD = () => {
             lists[listIndex].tasks.unshift(newTask);
             await storageService.set(StorageKeys.LISTS, lists);
             setTaskTitle('');
+            if (setTaskDescription) setTaskDescription('');
         } catch (error) {
             console.error('Error agregando tarea:', error);
             Alert.alert('Error', 'No se pudo agregar la tarea');
         }
     };
 
-    const updateTask = async ({ listId, taskIndex, newTitle }: UpdateTaskParams) => {
+    const updateTask = async ({ listId, taskIndex, newTitle, newDescription }: UpdateTaskParams) => {
         try {
             // Validar ID de lista
             const idValidation = validationService.validateId(listId);
@@ -211,6 +216,9 @@ export const useCRUD = () => {
                 return;
             }
 
+            // Sanitizar descripción si existe
+            const sanitizedDescription = newDescription ? validationService.sanitizeText(newDescription) : undefined;
+
             const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
             const listToUpdate = lists.find(list => list.id === listId);
 
@@ -225,6 +233,7 @@ export const useCRUD = () => {
             }
 
             listToUpdate.tasks[taskIndex].title = sanitizedTitle;
+            listToUpdate.tasks[taskIndex].description = sanitizedDescription;
             await storageService.set(StorageKeys.LISTS, lists);
         } catch (error) {
             console.error('Error actualizando tarea:', error);
