@@ -5,16 +5,16 @@ import {UiForm} from "@/components/UiForm";
 
 const UpdateTask = () => {
 
-    const {index, title,listIndex} = useLocalSearchParams()
+    const {index, title, listId} = useLocalSearchParams()
     const [newTitle, setNewTitle] = useState(title as string);
 
     const { UpdateTask } = useCRUDTask();
 
     const handleSave = async () => {
         await UpdateTask({
-            listIndex: Number(listIndex),
+            listId: listId as string,
             taskIndex: Number(index),
-            Newtitle: newTitle
+            newTitle: newTitle
         });
         router.back();
     };

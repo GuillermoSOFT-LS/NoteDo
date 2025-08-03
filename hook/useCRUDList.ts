@@ -1,50 +1,20 @@
 import React from 'react';
 import { router } from 'expo-router';
 import { storageService, StorageKeys } from '@/services/storageService';
-
-// --- Interfaces y Tipos (centralizaremos esto más adelante) ---
-export interface Task {
-    title: string;
-    isCompleted: boolean; // Agregamos el estado de completado
-    createdAt: string;
-}
-
-export interface TaskList {
-    id: string; // Agregamos un ID único para cada lista
-    title: string;
-    createdAt: string;
-    tasks: Task[];
-}
-
-// --- Interfaces de Props para las funciones del hook ---
-interface PropsAdd {
-    title: string;
-    setTitle: React.Dispatch<React.SetStateAction<string>>;
-}
-
-interface PropsShow {
-    setList: React.Dispatch<React.SetStateAction<TaskList[]>>;
-}
-
-interface PropsRemove extends PropsShow {
-    id: string; // Usaremos el ID para eliminar, no el índice
-}
-
-interface PropsUpdate {
-    id: string;
-    newTitle: string;
-}
-
-interface PropsAddTask {
-    listId: string;
-    taskTitle: string;
-    setTaskTitle: React.Dispatch<React.SetStateAction<string>>;
-}
+import {
+    Task,
+    TaskList,
+    AddListParams,
+    ShowListParams,
+    RemoveListParams,
+    UpdateListParams,
+    AddTaskParams
+} from '@/types/interfaces';
 
 // --- Hook principal ---
 export const useCRUDList = () => {
 
-    const AddList = async ({ title, setTitle }: PropsAdd) => {
+    const AddList = async ({ title, setTitle }: AddListParams) => {
         if (title.trim() === '') {
             return alert('El campo no puede estar vacío');
         }
@@ -68,12 +38,12 @@ export const useCRUDList = () => {
         router.back();
     };
 
-    const ShowList = async ({ setList }: PropsShow) => {
+    const ShowList = async ({ setList }: ShowListParams) => {
         const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
         setList(lists);
     };
 
-    const removeList = async ({ id, setList }: PropsRemove) => {
+    const removeList = async ({ id, setList }: RemoveListParams) => {
         const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
 
         // Preparando el código para la papelera:
@@ -84,7 +54,7 @@ export const useCRUDList = () => {
         setList(updatedLists);
     };
 
-    const UpdateList = async ({ id, newTitle }: PropsUpdate) => {
+    const UpdateList = async ({ id, newTitle }: UpdateListParams) => {
         const lists: TaskList[] = await storageService.get(StorageKeys.LISTS);
         const listToUpdate = lists.find(list => list.id === id);
 
@@ -98,7 +68,7 @@ export const useCRUDList = () => {
         }
     };
 
-    const AddTaskToList = async ({ listId, taskTitle, setTaskTitle }: PropsAddTask) => {
+    const AddTaskToList = async ({ listId, taskTitle, setTaskTitle }: AddTaskParams) => {
         if (taskTitle.trim() === '') {
             return alert('El campo no puede estar vacío');
         }
@@ -108,6 +78,7 @@ export const useCRUDList = () => {
 
         if (listIndex !== -1) {
             const newTask: Task = {
+                id: Date.now().toString(), // Agregamos ID único para las tareas
                 title: taskTitle,
                 isCompleted: false, // Por defecto, la tarea no está completada
                 createdAt: new Date().toISOString(),

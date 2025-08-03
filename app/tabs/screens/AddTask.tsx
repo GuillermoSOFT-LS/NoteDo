@@ -2,43 +2,21 @@ import React, { useEffect,useCallback, useState } from 'react';
 import {router, useFocusEffect, useLocalSearchParams} from "expo-router";
 import { useCRUDList } from "@/hook/useCRUDList";
 import {UiForm} from "@/components/UiForm";
-
-interface TaskList {
-    title: string;
-    tasks: string[];
-}
+import { TaskList } from "@/types/interfaces";
 
 const AddTask = () => {
-    const { title } = useLocalSearchParams();
+    const { listId } = useLocalSearchParams();
     const [titleTask, setTitleTask] = useState("");
-    const { ShowList, AddTaskToList } = useCRUDList();
-    const [listas, setListas] = useState<TaskList[]>([]);
-    const [listIndex, setListIndex] = useState<number>(-1);
-
-    useFocusEffect(
-        useCallback(() => {
-            const loadList = async () => {
-                await ShowList({ setList: setListas });
-            };
-            loadList();
-        }, [])
-    );
-
-    // Encuentra el índice de la lista actual por título
-    useEffect(() => {
-        const idx = listas.findIndex(l => l.title === title);
-        setListIndex(idx);
-    }, [listas, title]);
+    const { AddTaskToList } = useCRUDList();
 
     const handleAddTask = () => {
-        if (listIndex === -1) return;
+        if (!listId) return;
         AddTaskToList({
-            listIndex,
+            listId: listId as string,
             taskTitle: titleTask,
-            setTaskTitle: setTitleTask,
-            setList: setListas
+            setTaskTitle: setTitleTask
         });
-        router.back()
+        router.back();
     };
 
     return (

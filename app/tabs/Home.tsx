@@ -7,8 +7,9 @@ import { UiHeader } from "@/components/UiHeader";
 import { useState, useCallback } from "react";
 import { FlatList } from "react-native";
 import { UiCardList } from "@/components/UiCardList";
-import { useCRUDList, TaskList } from "@/hook/useCRUDList";
+import { useCRUDList } from "@/hook/useCRUDList";
 import { UiListEmpty } from "@/components/UiListEmpty";
+import { TaskList } from "@/types/interfaces";
 
 export default function Home() {
     const [Listas, setListas] = useState<TaskList[]>([]);
@@ -25,9 +26,9 @@ export default function Home() {
 
     return (
         <UiView bgColor>
-            <UiHeader title="NoteDo" icon2='book-outline' marginNull />
+            <UiHeader title="NoteDo" icon2="book-outline" marginNull />
             <UiView bgColor margin insetNull>
-                <UiViewAdd justifyContent='space-between' flexRow paddingB="lg">
+                <UiViewAdd justifyContent="space-between" flexRow paddingB="lg">
                     <UiText type="title" color="white">Listas</UiText>
                     <UiButtton
                         color="white"
@@ -37,17 +38,33 @@ export default function Home() {
                         onPress={() => router.push("/tabs/screens/AddList")}
                     />
                 </UiViewAdd>
-
                 <FlatList
                     data={Listas}
                     keyExtractor={(_, index) => index.toString()}
-                    ListEmptyComponent={<UiListEmpty title='No hay listas creadas' />}
-                    renderItem={({ index, item }) => (
+                    ListEmptyComponent={<UiListEmpty title="No hay listas creadas" />}
+                    renderItem={({ item }) => (
                         <UiCardList
                             titleList={item.title}
-                            createdAt={item.createdAt} // ✅ Ahora se muestra la fecha
-                            onPressRemove={() => removeList({ indice: index, setList: setListas })}
-                            onPressUpdate={() => router.push({ pathname: "/tabs/screens/UpdateList", params: { title: item.title, index } })}
+                            createdAt={item.createdAt}
+                            onPress={() =>
+                                router.push({
+                                    pathname: "/tabs/screens/DetailsList",
+                                    params: {
+                                        listId: item.id,
+                                        title: item.title
+                                    },
+                                })
+                            }
+                            onPressRemove={() => removeList({ id: item.id, setList: setListas })}
+                            onPressUpdate={() =>
+                                router.push({
+                                    pathname: "/tabs/screens/UpdateList",
+                                    params: {
+                                        id: item.id,
+                                        title: item.title,
+                                    },
+                                })
+                            }
                         />
                     )}
                 />

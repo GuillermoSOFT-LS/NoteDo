@@ -1,35 +1,37 @@
 import { View, StyleSheet, Pressable } from "react-native";
 import { UiText } from "@/components/UiText";
 import { UiButtton } from "@/components/UiButtton";
-import { router } from "expo-router";
 import { UiViewAdd } from "@/components/UiViewAdd";
 import { Checkbox } from "react-native-paper";
 import { useState } from "react";
-
-interface Props {
-    titleList: string;
-    createdAt?: string;
-    onPressRemove?: () => void;
-    onPressUpdate?: () => void;
-    showChecked?: boolean;
-    onLongPress?: () => void;
-}
+import { UiCardListProps } from "@/types/interfaces";
 
 export const UiCardList = ({
                                titleList,
                                createdAt,
+                               onPress,
                                onPressRemove,
                                onPressUpdate,
+                               onPressCheck,
                                showChecked,
+                               isChecked = false,
+                               isSelected = false,
                                onLongPress,
-                           }: Props) => {
-    const [Checked, setChecked] = useState(false);
+                           }: UiCardListProps) => {
+    const [checked, setChecked] = useState(isChecked);
     return (
         <View style={{ paddingBottom: 10 }}>
             <Pressable
-                style={[styles.container, { opacity: Checked ? 0.6 : 1 }]}
+                style={[
+                    styles.container,
+                    {
+                        opacity: checked ? 0.6 : 1,
+                        borderColor: isSelected ? 'orange' : 'transparent',
+                        borderWidth: isSelected ? 2 : 0
+                    }
+                ]}
                 onLongPress={onLongPress}
-                onPress={() => router.push({ pathname: "/tabs/screens/DetailsList", params: { title: titleList } })}
+                onPress={onPress}
             >
                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingBottom: 5 }}>
                     <UiText color="gray">
@@ -41,13 +43,16 @@ export const UiCardList = ({
                     <UiViewAdd flexRow>
                         {showChecked && (
                             <Checkbox
-                                status={Checked ? "checked" : "unchecked"}
-                                onPress={() => setChecked(!Checked)}
+                                status={checked ? "checked" : "unchecked"}
+                                onPress={() => {
+                                    setChecked(!checked);
+                                    onPressCheck?.();
+                                }}
                                 color="orange"
                             />
                         )}
                         <UiText
-                            style={{ textDecorationLine: Checked ? "line-through" : "none", maxWidth: 180 }}
+                            style={{ textDecorationLine: checked ? "line-through" : "none", maxWidth: 180 }}
                             type="text"
                             color="white"
                         >
