@@ -16,7 +16,13 @@ const UpdateTask = () => {
             taskIndex: Number(index),
             newTitle: newTitle
         });
-        router.back();
+        
+        router.replace({
+            pathname: "/tabs/screens/DetailsList",
+            params: {
+                listId: listId as string,
+            },
+        });
     };
 
     return (

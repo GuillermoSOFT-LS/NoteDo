@@ -55,20 +55,20 @@ const DetailsList = () => {
     }, [lists, listId]);
 
     // Función para manejar el estado del checkbox
-    const handleToggleTask = useCallback((taskIndex: number) => {
+    const handleToggleTask = useCallback(async (taskIndex: number) => {
         if (listId) {
-            toggleTaskCompleted({ listId: listId as string, taskIndex });
+            await toggleTaskCompleted({ listId: listId as string, taskIndex });
             // Recargar las listas después de la acción
-            showLists({ setList: setLists });
+            await showLists({ setList: setLists });
         }
     }, [listId, toggleTaskCompleted, showLists]);
 
     // Función para manejar la eliminación de tareas
-    const handleRemoveTask = useCallback((taskIndex: number) => {
+    const handleRemoveTask = useCallback(async (taskIndex: number) => {
         if (listId) {
-            removeTask({ listId: listId as string, taskIndex });
+            await removeTask({ listId: listId as string, taskIndex });
             // Recargar las listas después de la acción
-            showLists({ setList: setLists });
+            await showLists({ setList: setLists });
         }
     }, [listId, removeTask, showLists]);
 
@@ -94,12 +94,17 @@ const DetailsList = () => {
         setSelectedTasks([]);
     };
 
-    const handleBulkDeleteTasks = () => {
+    const handleBulkDeleteTasks = async () => {
         // Ordenar índices de mayor a menor para eliminar correctamente
         const sortedIndexes = selectedTasks.sort((a, b) => b - a);
-        sortedIndexes.forEach(taskIndex => {
-            handleRemoveTask(taskIndex);
-        });
+        
+        if (listId) {
+            for (const taskIndex of sortedIndexes) {
+                await removeTask({ listId: listId as string, taskIndex });
+            }
+            // Recargar las listas después de eliminar todas las tareas
+            await showLists({ setList: setLists });
+        }
         exitSelectionMode();
     };
 

@@ -48,11 +48,13 @@ export default function Home() {
         setSelectedLists([]);
     };
 
-    const handleBulkDelete = () => {
-        selectedLists.forEach(listId => {
-            removeList({ id: listId, setList: setListas });
-        });
+    const handleBulkDelete = async () => {
+        for (const listId of selectedLists) {
+            await removeList({ id: listId, setList: setListas });
+        }
         exitSelectionMode();
+        // Recargar las listas después de eliminar
+        await showLists({ setList: setListas });
     };
 
     return (
