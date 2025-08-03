@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useCRUDList} from "@/hook/useCRUDList";
+import {useCRUD} from "@/hooks/useCRUD";
 import {useLocalSearchParams, router} from "expo-router";
 import {UiForm} from "@/components/UiForm";
 
@@ -10,10 +10,10 @@ const UpdateList = () => {
     const {id, title} = useLocalSearchParams()
     const [newTitle, setNewTitle] = useState(title as string);
 
-    const { UpdateList } = useCRUDList();
+    const { updateList } = useCRUD();
 
     const handleSave = async () => {
-        await UpdateList({
+        await updateList({
             id: id as string,
             newTitle: newTitle
         });

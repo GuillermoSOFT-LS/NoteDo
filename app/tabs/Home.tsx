@@ -7,18 +7,18 @@ import { UiHeader } from "@/components/UiHeader";
 import { useState, useCallback } from "react";
 import { FlatList } from "react-native";
 import { UiCardList } from "@/components/UiCardList";
-import { useCRUDList } from "@/hook/useCRUDList";
+import { useCRUD } from "@/hooks/useCRUD";
 import { UiListEmpty } from "@/components/UiListEmpty";
 import { TaskList } from "@/types/interfaces";
 
 export default function Home() {
     const [Listas, setListas] = useState<TaskList[]>([]);
-    const { ShowList, removeList } = useCRUDList();
+    const { showLists, removeList } = useCRUD();
 
     useFocusEffect(
         useCallback(() => {
             const loadList = async () => {
-                await ShowList({ setList: setListas });
+                await showLists({ setList: setListas });
             };
             loadList();
         }, [])

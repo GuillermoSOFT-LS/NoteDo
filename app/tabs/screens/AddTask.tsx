@@ -1,17 +1,16 @@
-import React, { useEffect,useCallback, useState } from 'react';
-import {router, useFocusEffect, useLocalSearchParams} from "expo-router";
-import { useCRUDList } from "@/hook/useCRUDList";
+import React, { useState } from 'react';
+import {router, useLocalSearchParams} from "expo-router";
+import { useCRUD } from "@/hooks/useCRUD";
 import {UiForm} from "@/components/UiForm";
-import { TaskList } from "@/types/interfaces";
 
 const AddTask = () => {
     const { listId } = useLocalSearchParams();
     const [titleTask, setTitleTask] = useState("");
-    const { AddTaskToList } = useCRUDList();
+    const { addTaskToList } = useCRUD();
 
     const handleAddTask = () => {
         if (!listId) return;
-        AddTaskToList({
+        addTaskToList({
             listId: listId as string,
             taskTitle: titleTask,
             setTaskTitle: setTitleTask

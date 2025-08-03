@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {useLocalSearchParams, router} from "expo-router";
-import {useCRUDTask} from "@/hook/useCRUDTask";
+import {useCRUD} from "@/hooks/useCRUD";
 import {UiForm} from "@/components/UiForm";
 
 const UpdateTask = () => {
@@ -8,10 +8,10 @@ const UpdateTask = () => {
     const {index, title, listId} = useLocalSearchParams()
     const [newTitle, setNewTitle] = useState(title as string);
 
-    const { UpdateTask } = useCRUDTask();
+    const { updateTask } = useCRUD();
 
     const handleSave = async () => {
-        await UpdateTask({
+        await updateTask({
             listId: listId as string,
             taskIndex: Number(index),
             newTitle: newTitle

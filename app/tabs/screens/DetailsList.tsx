@@ -7,16 +7,14 @@ import { UiText } from '@/components/UiText';
 import { UiButtton } from '@/components/UiButtton';
 import { UiCardList } from '@/components/UiCardList';
 import { UiListEmpty } from '@/components/UiListEmpty';
-import { useCRUDList } from '@/hook/useCRUDList';
-import { useCRUDTask } from '@/hook/useCRUDTask';
+import { useCRUD } from '@/hooks/useCRUD';
 import { TaskList, Task } from '@/types/interfaces';
 
 const DetailsList = () => {
     // Ahora esperamos el 'id' de la lista en lugar del 'title'
     const { listId, title } = useLocalSearchParams();
 
-    const { ShowList } = useCRUDList();
-    const { removeTask, ToggleTaskCompleted } = useCRUDTask(); // Usamos las funciones del nuevo hook de tareas
+    const { showLists, removeTask, toggleTaskCompleted } = useCRUD();
 
     const [lists, setLists] = useState<TaskList[]>([]);
     const [currentTasks, setCurrentTasks] = useState<Task[]>([]);
@@ -25,10 +23,10 @@ const DetailsList = () => {
     useFocusEffect(
         useCallback(() => {
             const loadList = async () => {
-                await ShowList({ setList: setLists });
+                await showLists({ setList: setLists });
             };
             loadList();
-        }, [ShowList])
+        }, [showLists])
     );
 
     // useEffect para actualizar las tareas cuando las listas cambian
@@ -44,7 +42,7 @@ const DetailsList = () => {
     // Función para manejar el estado del checkbox
     const handleToggleTask = (taskIndex: number) => {
         if (listId) {
-            ToggleTaskCompleted({ listId: listId as string, taskIndex });
+            toggleTaskCompleted({ listId: listId as string, taskIndex });
         }
     };
 
