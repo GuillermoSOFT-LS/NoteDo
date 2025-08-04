@@ -3,6 +3,7 @@ import {SafeAreaProvider} from "react-native-safe-area-context";
 import { notificationService } from "@/services/notificationService";
 import { useEffect } from "react";
 
+
 export default function RootLayout() {
   
   useEffect(() => {
@@ -16,14 +17,15 @@ export default function RootLayout() {
   }, []);
 
   return (
-      <SafeAreaProvider>
-        <Stack screenOptions={{headerShown: false,}}>
-            <Stack.Screen
-            name="tabs"
-            options={{
-                title: 'NoteDo',
-            }}/>
-        </Stack>
-      </SafeAreaProvider>
+          <SafeAreaProvider>
+              <Stack screenOptions={{headerShown: false,}}>
+                  <Stack.Screen
+                      name="tabs"
+                      options={{
+                          title: 'NoteDo',
+                      }}/>
+              </Stack>
+          </SafeAreaProvider>
+
   );
 }

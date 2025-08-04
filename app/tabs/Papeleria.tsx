@@ -130,7 +130,7 @@ export default function Papeleria() {
                 isSelected={isSelected}
                 onPress={() => isSelectionMode ? toggleSelection(item.id) : undefined}
                 onLongPress={() => handleLongPress(item.id)}
-                onPressRemove={() => handleDeletePermanently(item.id, item.type)}
+                {...!isSelectionMode && {onPressRemove: () => handleDeletePermanently(item.id, item.type)}}
             />
         );
     };
@@ -172,7 +172,7 @@ export default function Papeleria() {
                                 onPress={handleBulkRestore}
                             />
                             <UiButtton
-                                color="orange"
+                                color="white"
                                 bgColor="red"
                                 icon="trash"
                                 text="Eliminar"

@@ -8,17 +8,22 @@ import { Task, TaskList } from '@/types/interfaces';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { TextInput, Portal, FAB, Provider as PaperProvider} from 'react-native-paper';
+import banner from "react-native-paper/src/components/Banner";
 
 const TaskDetails = () => {
     const { listId, taskIndex } = useLocalSearchParams();
     const { showLists, updateTask } = useCRUD();
-    
+
     const [lists, setLists] = useState<TaskList[]>([]);
     const [currentTask, setCurrentTask] = useState<Task | null>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editTitle, setEditTitle] = useState('');
     const [editDescription, setEditDescription] = useState('');
+
+    // FAB.Group
+    const [open, setOpen] = useState(false);
+    const onStateChange = ({ open }: { open: boolean }) => setOpen(open);
 
     // Cargar datos cuando la pantalla se enfoca
     useFocusEffect(
@@ -51,10 +56,9 @@ const TaskDetails = () => {
                 listId: listId as string,
                 taskIndex: Number(taskIndex),
                 newTitle: editTitle,
-                newDescription: editDescription
+                newDescription: editDescription,
             });
 
-            // Recargar datos
             await showLists({ setList: setLists });
             setIsEditing(false);
             Alert.alert('Éxito', 'Tarea actualizada correctamente');
@@ -78,7 +82,7 @@ const TaskDetails = () => {
             month: 'long',
             day: 'numeric',
             hour: '2-digit',
-            minute: '2-digit'
+            minute: '2-digit',
         });
     };
 
@@ -89,7 +93,7 @@ const TaskDetails = () => {
             month: 'long',
             day: 'numeric',
             hour: '2-digit',
-            minute: '2-digit'
+            minute: '2-digit',
         });
     };
 
@@ -105,25 +109,30 @@ const TaskDetails = () => {
     }
 
     return (
-        <UiView bgColor>
-            <UiHeader 
-                title={isEditing ? "Editando Tarea" : "Detalles de Tarea"} 
-                icon="arrow-back" 
+        <UiView bgColor style={{ flex: 1 }}>
+            <PaperProvider>
+            <UiHeader
+                title={isEditing ? 'Editando Tarea' : 'Detalles de Tarea'}
+                icon="arrow-back"
             />
-            
+
             <ScrollView style={{ flex: 1 }}>
                 <UiView bgColor margin insetNull>
                     {/* Título */}
                     <UiViewAdd paddingB="lg">
-                        <UiText type="subTitle" color="orange">
-                            Título
-                        </UiText>
+                        <UiViewAdd flexRow justifyContent="space-between">
+                            <UiText type="subTitle" color="orange">
+                                Título
+                            </UiText>
+
+                        </UiViewAdd>
+
                         {isEditing ? (
                             <TextInput
                                 mode="outlined"
                                 value={editTitle}
                                 onChangeText={setEditTitle}
-                                textColor='#D8D8D8'
+                                textColor="#D8D8D8"
                                 style={styles.input}
                                 theme={{
                                     colors: {
@@ -148,7 +157,7 @@ const TaskDetails = () => {
                                 mode="outlined"
                                 value={editDescription}
                                 onChangeText={setEditDescription}
-                                textColor='#D8D8D8'
+                                textColor="#D8D8D8"
                                 style={styles.input}
                                 multiline
                                 numberOfLines={4}
@@ -172,7 +181,7 @@ const TaskDetails = () => {
                             Recordatorio
                         </UiText>
                         {currentTask.reminder ? (
-                            <UiText type="text" color="orange">
+                            <UiText type="text" color="gray">
                                 {formatReminderDate(currentTask.reminder.date, currentTask.reminder.time)}
                             </UiText>
                         ) : (
@@ -192,12 +201,12 @@ const TaskDetails = () => {
                         </UiText>
                     </UiViewAdd>
 
-                    {/* Botones de acción */}
-                    <UiViewAdd paddingB="lg">
-                        {isEditing ? (
+                    {/* Botones de acción en modo edición */}
+                    {isEditing && (
+                        <UiViewAdd paddingB="lg">
                             <UiViewAdd flexRow justifyContent="space-between">
                                 <UiButtton
-                                    color="gray"
+                                    color="orange"
                                     bgColor="transparent"
                                     border
                                     icon="close"
@@ -212,38 +221,66 @@ const TaskDetails = () => {
                                     onPress={handleSaveChanges}
                                 />
                             </UiViewAdd>
-                        ) : (
-                            <UiViewAdd>
-                                <UiButtton
-                                    color="white"
-                                    bgColor="orange"
-                                    icon="create"
-                                    text="Editar Tarea"
-                                    onPress={() => setIsEditing(true)}
-                                />
-                                <UiViewAdd paddingT="md">
-                                    <UiButtton
-                                        color="orange"
-                                        bgColor="transparent"
-                                        border
-                                        icon="alarm"
-                                        text="Configurar Recordatorio"
-                                        onPress={() => {
-                                            router.push({
-                                                pathname: '/tabs/screens/AddReminder',
-                                                params: {
-                                                    taskId: currentTask.id,
-                                                    taskTitle: currentTask.title,
-                                                },
-                                            });
-                                        }}
-                                    />
-                                </UiViewAdd>
-                            </UiViewAdd>
-                        )}
-                    </UiViewAdd>
+                        </UiViewAdd>
+                    )}
                 </UiView>
             </ScrollView>
+
+            {/* FAB fijo en la pantalla */}
+
+            {!isEditing && (
+                <Portal>
+                    <FAB.Group
+                        open={open}
+                        visible
+                        icon={open ? 'close' : 'plus'}
+                        color="white"
+                        backdropColor="rgba(0, 0, 0, 0.5)"
+                        fabStyle={{
+                            backgroundColor: 'orange',
+                            elevation: 4,
+                            borderRadius: 28,
+                        }}
+                        style={{
+                            position: 'absolute',
+                            right: 16,
+                            bottom: 100,
+                        }}
+                        actions={[
+                            {
+                                icon: 'pencil',
+                                label: 'Editar Tarea',
+                                onPress: () => setIsEditing(true),
+                                color: 'black',
+                                style: { backgroundColor: '#fff' },
+                            },
+                            {
+                                icon: 'alarm',
+                                label: 'Recordatorio',
+                                onPress: () => {
+                                    router.push({
+                                        pathname: '/tabs/screens/AddReminder',
+                                        params: {
+                                            taskId: currentTask.id,
+                                            taskTitle: currentTask.title,
+                                        },
+                                    });
+                                },
+                                color: 'black',
+                                style: { backgroundColor: '#fff' },
+                            },
+                        ]}
+                        onStateChange={onStateChange}
+                        onPress={() => {
+                            if (open) {
+
+                            }
+                        }}
+                    />
+                </Portal>
+
+            )}
+    </PaperProvider>
         </UiView>
     );
 };
@@ -252,6 +289,11 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: '#000',
         marginBottom: 10,
+    },
+    fabGroup: {
+        position: 'absolute',
+        right: 16,
+        bottom: 16,
     },
 });
 

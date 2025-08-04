@@ -5,7 +5,6 @@ export const generateId = (): string => {
   return `${timestamp}_${randomPart}`;
 };
 
-// Función alternativa más robusta
-export const generateUniqueId = (): string => {
-  return 'id_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
-};
+// export const generateUniqueId = (): string => {
+//   return 'id_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+// };

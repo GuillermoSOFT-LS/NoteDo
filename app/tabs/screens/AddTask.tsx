@@ -61,7 +61,7 @@ const AddTask = () => {
                         textColor='#D8D8D8'
                         style={styles.input}
                         multiline
-                        numberOfLines={4}
+                        numberOfLines={10}
                         theme={{
                             colors: {
                                 primary: 'orange',

@@ -121,6 +121,13 @@ const DetailsList = () => {
                     </UiText>
                 )}
 
+                {!isSelectionMode && (
+                    <UiText color='gray' type='text' paddingB>
+                        {currentTasks.length} tareas creadas
+                    </UiText>
+                )
+                }
+
                 {isSelectionMode && (
                     <>
                         <UiViewAdd justifyContent="center" flexRow paddingB="lg">

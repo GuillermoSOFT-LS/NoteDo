@@ -78,9 +78,17 @@ export default function Home() {
                     </UiViewAdd>
                 )}
 
+                    {!isSelectionMode && (
+                        <UiText color='gray' type='text' paddingB>
+                            {Listas.length} listas creadas
+                        </UiText>
+                    )
+                }
+
+
                 {isSelectionMode && (
                     <>
-                        <UiViewAdd justifyContent='center' flexRow paddingB="lg">
+                        <UiViewAdd justifyContent='space-between' flexRow paddingB="lg">
                             <UiButtton
                                 color="orange"
                                 bgColor="transparent"
