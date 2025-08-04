@@ -1,5 +1,5 @@
-import {Tabs} from "expo-router";
-import {Ionicons} from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
 
 export default function RootTabs() {
     return (
@@ -27,10 +27,11 @@ export default function RootTabs() {
             />
 
             <Tabs.Screen name='screens/AddList' options={{href: null}}/>
+             <Tabs.Screen name='screens/AddReminder' options={{href: null}}/>
             <Tabs.Screen name='screens/AddTask' options={{href: null}}/>
             <Tabs.Screen name='screens/DetailsList' options={{href: null}}/>
             <Tabs.Screen name='screens/UpdateList' options={{href: null}}/>
-            <Tabs.Screen name='screens/UpdateTask' options={{href: null}}/>
+            <Tabs.Screen name='screens/TaskDetails' options={{href: null}}/>
         </Tabs>
     )
 }

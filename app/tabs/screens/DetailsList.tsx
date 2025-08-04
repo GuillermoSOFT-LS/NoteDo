@@ -1,90 +1,202 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { FlatList } from 'react-native';
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-
-import { UiView } from '@/components/UiView';
-import { UiHeader } from '@/components/UiHeader';
-import { UiText } from '@/components/UiText';
 import { UiButtton } from '@/components/UiButtton';
 import { UiCardList } from '@/components/UiCardList';
+import { UiHeader } from '@/components/UiHeader';
 import { UiListEmpty } from '@/components/UiListEmpty';
-import { useCRUDList } from '@/hook/useCRUDList';
+import { UiText } from '@/components/UiText';
+import { UiView } from '@/components/UiView';
+import { UiViewAdd } from '@/components/UiViewAdd';
+import { useCRUD } from '@/hooks/useCRUD';
+import { Task, TaskList } from '@/types/interfaces';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList } from 'react-native';
 
-// Actualizamos la estructura para que las tareas tengan fecha
-interface Task {
-    title: string;
-    createdAt: string;
-}
-
-interface TaskList {
-    title: string;
-    createdAt: string;
-    tasks: Task[];
-}
 
 const DetailsList = () => {
-    const { title } = useLocalSearchParams();
-    const { ShowList } = useCRUDList();
-    const [listas, setListas] = useState<TaskList[]>([]);
-    const [listIndex, setListIndex] = useState<number>(-1);
+    // Ahora esperamos el 'id' de la lista en lugar del 'title'
+    const { listId, title } = useLocalSearchParams();
 
+    const { showLists, removeTask, toggleTaskCompleted } = useCRUD();
+
+
+    const [lists, setLists] = useState<TaskList[]>([]);
+    const [currentTasks, setCurrentTasks] = useState<Task[]>([]);
+    const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
+    const [isSelectionMode, setIsSelectionMode] = useState(false);
+
+    // Usamos useFocusEffect para cargar las listas cada vez que la pantalla se enfoca
     useFocusEffect(
         useCallback(() => {
             const loadList = async () => {
-                await ShowList({ setList: setListas });
+                await showLists({ setList: setLists });
             };
             loadList();
-        }, [ShowList])
+        }, [])
     );
 
+    // Recargar cuando cambie listId (para detectar navegación desde AddTask)
     useEffect(() => {
-        const idx = listas.findIndex((l) => l.title === title);
-        setListIndex(idx);
-    }, [listas, title,listIndex]);
+        if (listId) {
+            const loadList = async () => {
+                await showLists({ setList: setLists });
+            };
+            loadList();
+        }
+    }, [listId]);
 
-    const currentTasks = listIndex !== -1 ? listas[listIndex].tasks : [];
+    // useEffect para actualizar las tareas cuando las listas cambian
+    useEffect(() => {
+        if (listId) {
+            const list = lists.find((l) => l.id === listId);
+            if (list) {
+                setCurrentTasks(list.tasks);
+            }
+        }
+    }, [lists, listId]);
+
+    // Función para manejar el estado del checkbox
+    const handleToggleTask = useCallback(async (taskIndex: number) => {
+        if (listId) {
+            await toggleTaskCompleted({ listId: listId as string, taskIndex });
+            // Recargar las listas después de la acción
+            await showLists({ setList: setLists });
+        }
+    }, [listId, toggleTaskCompleted, showLists]);
+
+    // Función para manejar la eliminación de tareas
+    const handleRemoveTask = useCallback(async (taskIndex: number) => {
+        if (listId) {
+            await removeTask({ listId: listId as string, taskIndex });
+            // Recargar las listas después de la acción
+            await showLists({ setList: setLists });
+        }
+    }, [listId, removeTask, showLists]);
+
+    const handleLongPress = (taskIndex: number) => {
+        if (!isSelectionMode) {
+            setIsSelectionMode(true);
+            setSelectedTasks([taskIndex]);
+        } else {
+            toggleTaskSelection(taskIndex);
+        }
+    };
+
+    const toggleTaskSelection = (taskIndex: number) => {
+        setSelectedTasks(prev =>
+            prev.includes(taskIndex)
+                ? prev.filter(index => index !== taskIndex)
+                : [...prev, taskIndex]
+        );
+    };
+
+    const exitSelectionMode = () => {
+        setIsSelectionMode(false);
+        setSelectedTasks([]);
+    };
+
+    const handleBulkDeleteTasks = async () => {
+        // Ordenar índices de mayor a menor para eliminar correctamente
+        const sortedIndexes = selectedTasks.sort((a, b) => b - a);
+        
+        if (listId) {
+            for (const taskIndex of sortedIndexes) {
+                await removeTask({ listId: listId as string, taskIndex });
+            }
+            // Recargar las listas después de eliminar todas las tareas
+            await showLists({ setList: setLists });
+        }
+        exitSelectionMode();
+    };
 
     return (
         <UiView bgColor>
-            <UiHeader title={title as string} icon="arrow-back" />
+            <UiHeader
+                title={isSelectionMode ? `${selectedTasks.length} seleccionadas` : title as string}
+                icon="arrow-back"
+            />
             <UiView bgColor margin insetNull>
-                <UiText color="gray" type="title" paddingB>
-                    Lista de Tareas
-                </UiText>
+                {!isSelectionMode && (
+                    <UiText color="gray" type="title" paddingB>
+                        Lista de tareas
+                    </UiText>
+                )}
 
+                {isSelectionMode && (
+                    <>
+                        <UiViewAdd justifyContent="center" flexRow paddingB="lg">
+                            <UiButtton
+                                color="orange"
+                                bgColor="transparent"
+                                border
+                                icon="close"
+                                text="Cancelar"
+                                onPress={exitSelectionMode}
+                            />
+                    
+                            <UiButtton
+                                color="white"
+                                bgColor="red"
+                                icon="trash"
+                                text={`Eliminar ${selectedTasks.length} tareas`}
+                                onPress={handleBulkDeleteTasks}
+                            />
+                        </UiViewAdd>
+                    </>
+                )}
                 <FlatList
                     data={currentTasks}
                     keyExtractor={(_, index) => index.toString()}
                     ListEmptyComponent={<UiListEmpty title="No hay tareas creadas" />}
-                    renderItem={({ index, item }) => (
-                        <UiCardList
-                            showChecked
-                            titleList={item.title}
-                            createdAt={item.createdAt}
-                            onPressUpdate={() =>
-                                router.push({
-                                    pathname: '/tabs/screens/UpdateTask',
-                                    params: {
-                                        title: item.title,
-                                        index: index,
-                                        listIndex: listIndex,
-                                    },
-                                })
-                            }
-                        />
-                    )}
+                    renderItem={({ index, item }) => {
+                        const isSelected = selectedTasks.includes(index);
+                        return (
+                            <UiCardList
+                                titleList={item.title}
+                                createdAt={item.createdAt}
+                                showChecked={!isSelectionMode}
+                                isChecked={item.isCompleted}
+                                isSelected={isSelected}
+                                reminder={item.reminder}
+                                onPressCheck={!isSelectionMode ? () => handleToggleTask(index) : undefined}
+                                onLongPress={() => handleLongPress(index)}
+                                onPressUpdate={!isSelectionMode ? () =>
+                                    router.push({
+                                        pathname: '/tabs/screens/TaskDetails',
+                                        params: {
+                                            listId: listId,
+                                            taskIndex: index,
+                                        },
+                                    }) : undefined
+                                }
+                                onPress={() => {
+                                    if (isSelectionMode) {
+                                        toggleTaskSelection(index);
+                                    } else {
+                                        router.push({
+                                            pathname: '/tabs/screens/TaskDetails',
+                                            params: {
+                                                listId: listId,
+                                                taskIndex: index,
+                                            },
+                                        });
+                                    }
+                                }}
+                            />
+                        );
+                    }}
                 />
-
                 <UiButtton
                     bgColor="orange"
                     color="white"
                     icon="add"
-                    text="Agregar Tarea"
+                    text="Agregar tarea"
                     radius
                     onPress={() =>
                         router.push({
                             pathname: '/tabs/screens/AddTask',
-                            params: { title: title as string },
+                            params: {
+                                listId: listId,
+                            },
                         })
                     }
                 />

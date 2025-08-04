@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import {useCRUDList} from "@/hook/useCRUDList";
+import {useCRUD} from "@/hooks/useCRUD";
 import {UiForm} from "@/components/UiForm";
 
 const AddList = () => {
 
     const [titleList, setTitleList] = useState("")
 
-    const  {AddList} = useCRUDList()
+    const  {addList} = useCRUD()
 
     return (
             <UiForm
                 textBtn='Crear Lista'
-                onPress={()=> AddList({title: titleList, setTitle: setTitleList})}
+                onPress={()=> addList({title: titleList, setTitle: setTitleList})}
                 onChangeText={(title) => setTitleList(title)}
                 placeholder='Nombre de la nueva lista'
                 value={titleList}
