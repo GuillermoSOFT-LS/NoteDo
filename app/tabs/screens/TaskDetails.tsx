@@ -115,7 +115,7 @@ const TaskDetails = () => {
                 <UiView bgColor margin insetNull>
                     {/* Título */}
                     <UiViewAdd paddingB="lg">
-                        <UiText type="text" color="gray" paddingB="sm">
+                        <UiText type="subTitle" color="orange">
                             Título
                         </UiText>
                         {isEditing ? (
@@ -132,7 +132,7 @@ const TaskDetails = () => {
                                 }}
                             />
                         ) : (
-                            <UiText type="title" color="white">
+                            <UiText type="text" color="white">
                                 {currentTask.title}
                             </UiText>
                         )}
@@ -140,7 +140,7 @@ const TaskDetails = () => {
 
                     {/* Descripción */}
                     <UiViewAdd paddingB="lg">
-                        <UiText type="text" color="gray" paddingB="sm">
+                        <UiText type="subTitle" color="orange">
                             Descripción
                         </UiText>
                         {isEditing ? (
@@ -166,19 +166,9 @@ const TaskDetails = () => {
                         )}
                     </UiViewAdd>
 
-                    {/* Estado */}
-                    <UiViewAdd paddingB="lg">
-                        <UiText type="text" color="gray" paddingB="sm">
-                            Estado
-                        </UiText>
-                        <UiText type="text" color={currentTask.isCompleted ? "green" : "orange"}>
-                            {currentTask.isCompleted ? "Completada" : "Pendiente"}
-                        </UiText>
-                    </UiViewAdd>
-
                     {/* Recordatorio */}
                     <UiViewAdd paddingB="lg">
-                        <UiText type="text" color="gray" paddingB="sm">
+                        <UiText type="text" color="orange">
                             Recordatorio
                         </UiText>
                         {currentTask.reminder ? (
@@ -194,8 +184,8 @@ const TaskDetails = () => {
 
                     {/* Fecha de creación */}
                     <UiViewAdd paddingB="lg">
-                        <UiText type="text" color="gray" paddingB="sm">
-                            Creada el
+                        <UiText type="text" color="orange">
+                            Fecha de creación:
                         </UiText>
                         <UiText type="text" color="gray">
                             {formatDate(currentTask.createdAt)}
