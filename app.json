@@ -9,7 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "background-fetch",
+          "background-processing"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +23,14 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "permissions": ["RECEIVE_BOOT_COMPLETED", "VIBRATE"]
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED", 
+        "VIBRATE",
+        "SCHEDULE_EXACT_ALARM",
+        "USE_EXACT_ALARM",
+        "WAKE_LOCK",
+        "FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -39,8 +52,25 @@
         "expo-notifications",
         {
           "color": "#FF8C00",
-          "defaultChannel": "default"
+          "defaultChannel": "default",
+          "iosDisplayInForeground": true,
+          "androidMode": "default",
+          "androidCollapsedTitle": "#{unread_notifications} nuevas notificaciones"
         }
+      ],
+      [
+        "expo-background-task",
+        {
+          "android": {
+            "background_modes": ["background-task"]
+          },
+          "ios": {
+            "background_modes": ["background-fetch", "background-processing"]
+          }
+        }
+      ],
+      [
+        "expo-task-manager"
       ]
     ],
     "experiments": {

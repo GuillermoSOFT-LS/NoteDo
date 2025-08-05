@@ -4,7 +4,3 @@ export const generateId = (): string => {
   const randomPart = Math.random().toString(36).substring(2, 15);
   return `${timestamp}_${randomPart}`;
 };
-
-// export const generateUniqueId = (): string => {
-//   return 'id_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
-// };

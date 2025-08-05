@@ -1,6 +1,6 @@
 import { Reminder } from '@/types/interfaces';
 import { Alert } from 'react-native';
-import { storageService, StorageKeys } from './storageService';
+import { storageService } from './storageService';
 
 // Sistema de notificaciones simple sin expo-notifications
 export const simpleNotificationService = {
